@@ -1,0 +1,74 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dxfstructuraljm"
+version = "1.2.0"
+description = "Generador automatico de planos estructurales DXF (ezdxf wrapper)"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "JM"}]
+license = {text = "MIT"}
+dependencies = ["ezdxf>=1.0", "jmstructural-common"]
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "pydantic>=2",
+]
+autocad = [
+    "pyautocad>=0.2",
+]
+test = [
+    "pytest>=7",
+    "pytest-cov>=4",
+    "hypothesis>=6",
+    "httpx>=0.27",
+]
+cli = []
+
+[project.scripts]
+dxfstructuraljm = "dxfstructuraljm.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dxfstructuraljm*"]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra"
+testpaths = ["tests"]
+markers = [
+    "unit: tests unitarios rapidos",
+    "integration: tests que escriben archivos DXF y los re-leen",
+    "property: tests con hypothesis",
+    "api: tests del REST API (FastAPI / TestClient)",
+    "slow: tests que tardan mas de 1s",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:ezdxf.*",
+    "ignore::DeprecationWarning:pyparsing.*",
+]
+
+[tool.coverage.run]
+source = ["dxfstructuraljm"]
+omit = [
+    "dxfstructuraljm/cli.py",
+    "dxfstructuraljm/_brand.py",
+]
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
+skip_covered = false
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
+
+[tool.uv.sources]
+jmstructural-common = { workspace = true }
