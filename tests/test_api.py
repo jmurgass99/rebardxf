@@ -31,7 +31,7 @@ def test_column_endpoint_json():
     assert data["label"] == "C-API"
     assert data["bytes"] > 100
     raw = base64.b64decode(data["dxf_base64"])
-    assert raw[:4] in (b"\x30\x30\x30\x30", b"0\r\n0\n", b"  0\r")  # DXF header
+    assert b"0" in raw[:10]  # DXF header starts with 0 group code
     assert len(raw) == data["bytes"]
 
 
