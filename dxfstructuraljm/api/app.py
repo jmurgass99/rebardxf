@@ -1,7 +1,7 @@
 """FastAPI REST de DXFStructuralJm.
 
 Endpoints:
-- GET  /health
+- GET  /api/drawings/health
 - POST /api/drawings/column   -> seccion de columna
 - POST /api/drawings/beam     -> seccion de viga
 - POST /api/drawings/footing  -> plano de fundacion
