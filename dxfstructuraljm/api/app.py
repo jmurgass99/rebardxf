@@ -117,7 +117,7 @@ def _handle(fn, *args) -> Any:
 router = APIRouter()
 
 
-@router.get("/health")
+@router.get("/api/drawings/health")
 def health() -> dict[str, str]:
     """Healthcheck."""
     return {"status": "ok", "service": "dxfstructuraljm"}
