@@ -26,6 +26,7 @@ from .column_rebar_detail import (
 from .footing_rebar_detail import (
     FootingRebarDetail, render_footing_rebar_detail,
 )
+from .frame_elevation import FrameElevationDetail
 from .exceptions import (
     DXFError, ConfigurationError, GeometryError, TemplateError, DependencyError,
 )
@@ -35,6 +36,7 @@ __all__ = [
     "TemplateError", "DependencyError",
     "DXFDocument", "Layer",
     "ColumnDetail", "BeamDetail",
+    "FrameElevationDetail",
     "FoundationPlan", "FootingData",
     "RebarSchedule", "RebarEntry",
     "WallDetail",
