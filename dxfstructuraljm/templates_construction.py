@@ -301,10 +301,127 @@ def build_wall_section_template(inp: WallSectionTemplateInput) -> TemplateGeomet
     return g
 
 
+@dataclass(frozen=True)
+class SheetA1LayoutInput:
+    """Parámetros para generar una lámina A1 completa envolviendo planos."""
+    project_name: str
+    drawing_title: str
+    drawing_number: str
+    revision: str = "0"
+    author: str = "JM"
+    scale: str = "1:50"
+    sheet_width_mm: float = 841.0
+    sheet_height_mm: float = 594.0
+    margin_mm: float = 10.0
+
+
+def build_a1_sheet_with_titleblock(
+    inp: SheetA1LayoutInput,
+    drawings: list[tuple[TemplateGeometry, tuple[float, float]]] | None = None,
+) -> TemplateGeometry:
+    """Genera la lámina A1 con marco exterior, margen normativo, cajetín y dibujos incrustados."""
+    g = TemplateGeometry()
+
+    w = inp.sheet_width_mm
+    h = inp.sheet_height_mm
+    m = inp.margin_mm
+
+    # 1. Borde exterior de papel
+    g.rectangles.append((0.0, 0.0, w, h))
+
+    # 2. Margen interior de dibujo (10 mm)
+    g.rectangles.append((m, m, w - 2 * m, h - 2 * m))
+
+    # 3. Cajetín normalizado A1 en esquina inferior derecha (180 x 80 mm)
+    tb_w, tb_h = 180.0, 80.0
+    tb_x = w - m - tb_w
+    tb_y = m
+
+    g.rectangles.append((tb_x, tb_y, tb_w, tb_h))
+    # Divisiones horizontales del cajetín
+    g.lines.append((tb_x, tb_y + 20.0, tb_x + tb_w, tb_y + 20.0))
+    g.lines.append((tb_x, tb_y + 40.0, tb_x + tb_w, tb_y + 40.0))
+    g.lines.append((tb_x, tb_y + 60.0, tb_x + tb_w, tb_y + 60.0))
+    # Divisiones verticales
+    g.lines.append((tb_x + 90.0, tb_y, tb_x + 90.0, tb_y + 40.0))
+
+    # Textos del cajetín
+    g.texts.extend([
+        {"pos": (tb_x + 5.0, tb_y + 65.0), "text": f"PROYECTO: {inp.project_name}", "height": 3.5},
+        {"pos": (tb_x + 5.0, tb_y + 45.0), "text": f"PLANO: {inp.drawing_title} ({inp.drawing_number})", "height": 3.0},
+        {"pos": (tb_x + 5.0, tb_y + 25.0), "text": f"ESCALA: {inp.scale}", "height": 2.5},
+        {"pos": (tb_x + 95.0, tb_y + 25.0), "text": f"REV: {inp.revision}", "height": 2.5},
+        {"pos": (tb_x + 5.0, tb_y + 5.0), "text": f"AUTOR: {inp.author}", "height": 2.5},
+        {"pos": (tb_x + 95.0, tb_y + 5.0), "text": "SOFTWARE: JMSTRUCTURAL", "height": 2.5},
+    ])
+
+    # 4. Incrustar detalles y planos dentro del área útil de la lámina
+    if drawings:
+        for geom, (ox, oy) in drawings:
+            for rx, ry, rw, rh in geom.rectangles:
+                g.rectangles.append((ox + rx, oy + ry, rw, rh))
+            for cx, cy, cr in geom.circles:
+                g.circles.append((ox + cx, oy + cy, cr))
+            for x1, y1, x2, y2 in geom.lines:
+                g.lines.append((ox + x1, oy + y1, ox + x2, oy + y2))
+            for t in geom.texts:
+                t_pos = t.get("pos", (0.0, 0.0))
+                g.texts.append({
+                    "pos": (ox + t_pos[0], oy + t_pos[1]),
+                    "text": t.get("text", ""),
+                    "height": t.get("height", 2.5),
+                })
+
+    return g
+
+
+def render_a1_sheet_to_dxf(sheet_geom: TemplateGeometry, out_path: str) -> None:
+    """Renderiza la geometría de lámina A1 a un archivo DXF AutoCAD R2010."""
+    import ezdxf
+    doc = ezdxf.new("R2010")
+    msp = doc.modelspace()
+
+    # Capas
+    if "BORDER" not in doc.layers:
+        doc.layers.add("BORDER", color=7)
+    if "GEOMETRY" not in doc.layers:
+        doc.layers.add("GEOMETRY", color=3)
+    if "REBAR" not in doc.layers:
+        doc.layers.add("REBAR", color=1)
+    if "TEXT" not in doc.layers:
+        doc.layers.add("TEXT", color=2)
+
+    # Rectángulos
+    for x, y, rw, rh in sheet_geom.rectangles:
+        pts = [(x, y), (x + rw, y), (x + rw, y + rh), (x, y + rh), (x, y)]
+        for p1, p2 in zip(pts[:-1], pts[1:]):
+            msp.add_line(p1, p2, dxfattribs={"layer": "BORDER"})
+
+    # Líneas
+    for x1, y1, x2, y2 in sheet_geom.lines:
+        msp.add_line((x1, y1), (x2, y2), dxfattribs={"layer": "BORDER"})
+
+    # Círculos
+    for cx, cy, cr in sheet_geom.circles:
+        msp.add_circle((cx, cy), cr, dxfattribs={"layer": "REBAR"})
+
+    # Textos
+    for t in sheet_geom.texts:
+        pos = t.get("pos", (0.0, 0.0))
+        txt = t.get("text", "")
+        h = t.get("height", 2.5)
+        msp.add_text(txt, dxfattribs={"layer": "TEXT", "height": h}).set_placement(pos)
+
+    doc.saveas(out_path)
+
+
 __all__ = [
     "FootingTemplateInput", "TitleBlockA1Input", "TemplateGeometry",
     "build_footing_template", "build_title_block_a1",
     "BeamSectionTemplateInput", "build_beam_section_template",
     "ColumnSectionTemplateInput", "build_column_section_template",
     "WallSectionTemplateInput", "build_wall_section_template",
+    "SheetA1LayoutInput", "build_a1_sheet_with_titleblock",
+    "render_a1_sheet_to_dxf",
 ]
+
