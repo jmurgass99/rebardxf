@@ -365,10 +365,12 @@ def build_a1_sheet_with_titleblock(
             for x1, y1, x2, y2 in geom.lines:
                 g.lines.append((ox + x1, oy + y1, ox + x2, oy + y2))
             for t in geom.texts:
-                t_pos = t.get("pos", (0.0, 0.0))
+                if "pos" not in t or "text" not in t:
+                    raise KeyError(f"Texto incompleto en plantilla: se requieren 'pos' y 'text'. Encontrado: {t}")
+                t_pos = t["pos"]
                 g.texts.append({
                     "pos": (ox + t_pos[0], oy + t_pos[1]),
-                    "text": t.get("text", ""),
+                    "text": t["text"],
                     "height": t.get("height", 2.5),
                 })
 
@@ -376,7 +378,7 @@ def build_a1_sheet_with_titleblock(
 
 
 def render_a1_sheet_to_dxf(sheet_geom: TemplateGeometry, out_path: str) -> None:
-    """Renderiza la geometría de lámina A1 a un archivo DXF AutoCAD R2010."""
+    """Renderiza la geometría de lámina A1 a un archivo DXF AutoCAD R2010 con capas temáticas BORDER, GEOMETRY, REBAR y TEXT."""
     import ezdxf
     doc = ezdxf.new("R2010")
     msp = doc.modelspace()
@@ -391,24 +393,28 @@ def render_a1_sheet_to_dxf(sheet_geom: TemplateGeometry, out_path: str) -> None:
     if "TEXT" not in doc.layers:
         doc.layers.add("TEXT", color=2)
 
-    # Rectángulos
-    for x, y, rw, rh in sheet_geom.rectangles:
+    # Rectángulos: los primeros 3 (marco exterior, margen interior y cajetín) en BORDER; el resto (geometría de piezas) en GEOMETRY
+    for idx, (x, y, rw, rh) in enumerate(sheet_geom.rectangles):
+        layer = "BORDER" if idx < 3 else "GEOMETRY"
         pts = [(x, y), (x + rw, y), (x + rw, y + rh), (x, y + rh), (x, y)]
         for p1, p2 in zip(pts[:-1], pts[1:]):
-            msp.add_line(p1, p2, dxfattribs={"layer": "BORDER"})
+            msp.add_line(p1, p2, dxfattribs={"layer": layer})
 
-    # Líneas
-    for x1, y1, x2, y2 in sheet_geom.lines:
-        msp.add_line((x1, y1), (x2, y2), dxfattribs={"layer": "BORDER"})
+    # Líneas: las primeras 4 (divisiones del cajetín) en BORDER; el resto en GEOMETRY
+    for idx, (x1, y1, x2, y2) in enumerate(sheet_geom.lines):
+        layer = "BORDER" if idx < 4 else "GEOMETRY"
+        msp.add_line((x1, y1), (x2, y2), dxfattribs={"layer": layer})
 
-    # Círculos
+    # Círculos (armaduras / rebar)
     for cx, cy, cr in sheet_geom.circles:
         msp.add_circle((cx, cy), cr, dxfattribs={"layer": "REBAR"})
 
     # Textos
     for t in sheet_geom.texts:
-        pos = t.get("pos", (0.0, 0.0))
-        txt = t.get("text", "")
+        if "pos" not in t or "text" not in t:
+            raise KeyError(f"Texto incompleto en entidad DXF: se requieren 'pos' y 'text'. Encontrado: {t}")
+        pos = t["pos"]
+        txt = t["text"]
         h = t.get("height", 2.5)
         msp.add_text(txt, dxfattribs={"layer": "TEXT", "height": h}).set_placement(pos)
 

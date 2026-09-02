@@ -73,3 +73,35 @@ def test_golden_a1_construction_sheet_wrapping_structural_drawings():
         msp = doc.modelspace()
         assert len(list(msp.query("LINE"))) > 10
         assert len(list(msp.query("TEXT"))) >= 6
+
+        # Verificación explícita de capas usadas: BORDER, GEOMETRY, REBAR, TEXT
+        border_lines = list(msp.query("LINE[layer=='BORDER']"))
+        geom_lines = list(msp.query("LINE[layer=='GEOMETRY']"))
+        rebar_circles = list(msp.query("CIRCLE[layer=='REBAR']"))
+        texts = list(msp.query("TEXT[layer=='TEXT']"))
+
+        assert len(border_lines) >= 16, "Deben existir líneas en capa BORDER (marco y cajetín)"
+        assert len(geom_lines) >= 8, "Deben existir líneas en capa GEOMETRY (secciones y zapatas)"
+        assert len(rebar_circles) > 0, "Deben existir círculos en capa REBAR"
+        assert len(texts) >= 6, "Deben existir textos en capa TEXT"
+
+
+def test_golden_templates_construction_missing_key_raises_keyerror():
+    """GOLDEN. La ausencia de datos obligatorios ('pos' o 'text') debe lanzar KeyError y no fabricar defaults vacíos."""
+    from dxfstructuraljm.templates_construction import TemplateGeometry
+
+    # 1. Error en build_a1_sheet_with_titleblock con texto sin pos
+    invalid_geom = TemplateGeometry(texts=[{"text": "Texto sin pos"}])
+    sheet_input = SheetA1LayoutInput(
+        project_name="Test", drawing_title="Test", drawing_number="01"
+    )
+    with pytest.raises(KeyError, match="Texto incompleto"):
+        build_a1_sheet_with_titleblock(sheet_input, [(invalid_geom, (0.0, 0.0))])
+
+    # 2. Error en render_a1_sheet_to_dxf con texto sin text
+    invalid_sheet = TemplateGeometry(texts=[{"pos": (10.0, 10.0)}])
+    with tempfile.TemporaryDirectory() as tmpdir:
+        out = str(Path(tmpdir) / "err.dxf")
+        with pytest.raises(KeyError, match="Texto incompleto"):
+            render_a1_sheet_to_dxf(invalid_sheet, out)
+

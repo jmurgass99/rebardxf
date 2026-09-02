@@ -177,17 +177,25 @@ class ColumnScheduleDrawer:
 
                 # Barras de esquina
                 bar_r = max(spec.db_mm * s_factor / 2.0, 4.0)
+                # 4 barras de esquina (siempre presentes para columnas rectangulares)
+                if spec.n_bars < 4:
+                    raise ValueError(f"spec.n_bars must be at least 4, got {spec.n_bars} for {spec.column_tag}")
+                if spec.n_bars % 2 != 0:
+                    raise ValueError(
+                        f"spec.n_bars must be an even integer >= 4 for symmetric column reinforcement, got {spec.n_bars} for {spec.column_tag}"
+                    )
+
                 _add_circle((sx_left, sy_bot), bar_r)
                 _add_circle((sx_right, sy_bot), bar_r)
                 _add_circle((sx_right, sy_top), bar_r)
                 _add_circle((sx_left, sy_top), bar_r)
 
-                # Barras intermedias si n_bars > 4
-                extra_bars = spec.n_bars - 4
-                if extra_bars > 0:
-                    for eb in range(1, extra_bars + 1):
-                        frac = eb / (extra_bars + 1)
-                        # Distribuir en las caras principales
+                # Barras intermedias si n_bars > 4: repartir simétricamente (n_bars - 4)/2 en cada cara
+                n_side_bars = (spec.n_bars - 4) // 2
+                if n_side_bars > 0:
+                    for eb in range(1, n_side_bars + 1):
+                        frac = eb / (n_side_bars + 1)
+                        # Distribuir en las caras principales superior e inferior
                         bx = sx_left + frac * (sx_right - sx_left)
                         _add_circle((bx, sy_bot), bar_r)
                         _add_circle((bx, sy_top), bar_r)
@@ -195,7 +203,7 @@ class ColumnScheduleDrawer:
                 # Rótulos textuales inferiores en la celda
                 txt_y1 = row_y0 + self.cell_h * 0.22
                 txt_y2 = row_y0 + self.cell_h * 0.10
-                dim_str = f"{int(bw)} x {int(bh)} cm" if bw < 100 else f"{int(bw/10)}x{int(bh/10)}"
+                dim_str = f"{int(round(bw / 10))}x{int(round(bh / 10))} cm"
                 rebar_str = f"{spec.n_bars}Ø{int(spec.db_mm)}"
                 stirrup_str = f"e: Ø{int(spec.stirrup_db_mm)} c/{int(spec.stirrup_spacing_mm/10)}cm"
 
