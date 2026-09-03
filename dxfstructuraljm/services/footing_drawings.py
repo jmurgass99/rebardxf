@@ -47,6 +47,12 @@ def draw_footing_plan(inp: FootingPlanInput, output_path: str | Path) -> dict[st
             As_x=f.get("As_x"), As_y=f.get("As_y"),
             db=f.get("db"),
             fc=f.get("fc"), Fy=f.get("Fy"),
+            design_code=f.get("design_code", "ACI318-19"),
+            cover_mm=f.get("cover_mm", 75.0),
+            d_agg_mm=f.get("d_agg_mm"),
+            s_max_override_mm=f.get("s_max_override_mm"),
+            s_min_override_mm=f.get("s_min_override_mm"),
+            s_commercial_step_mm=f.get("s_commercial_step_mm", 25.0),
         )
         for f in inp.footings
     ]
