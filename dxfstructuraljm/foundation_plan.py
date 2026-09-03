@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import math
 from .core import DXFDocument, Layer
+from jmstructural_common.audit_status import CalculationStatus
 
 
 @dataclass
@@ -16,11 +17,16 @@ class FootingData:
     B: float          # width [mm]
     L: float          # length [mm]
     d: float          # depth [mm]
-    As_x: float       # steel per unit width in x-dir [mm²/m]
-    As_y: float       # steel per unit width in y-dir [mm²/m]
-    db: float = 16.0  # bar diameter [mm]
-    fc: float = 28.0
-    Fy: float = 420.0
+    As_x: float | None = None  # steel per unit width in x-dir [mm²/m]
+    As_y: float | None = None  # steel per unit width in y-dir [mm²/m]
+    db: float | None = None    # bar diameter [mm]
+    fc: float | None = None
+    Fy: float | None = None
+    status: CalculationStatus = CalculationStatus.CALCULADO_CUMPLE
+
+    def __post_init__(self) -> None:
+        if self.As_x is None or self.As_y is None:
+            self.status = CalculationStatus.NO_CALCULADO
 
 
 @dataclass
@@ -59,7 +65,7 @@ class FoundationPlan:
                           layer=Layer.CONCRETE, lineweight=0.70)
 
             # Rebar pattern (simplified: lines across footing)
-            if self.draw_rebar:
+            if self.draw_rebar and f.status != CalculationStatus.NO_CALCULADO:
                 cover = 75.0  # typical footing cover
                 n_x = max(3, int(f.B / 200))   # one bar per 200mm approx
                 n_y = max(3, int(f.L / 200))
@@ -87,9 +93,25 @@ class FoundationPlan:
                      f"{f.B/1000:.2f}×{f.L/1000:.2f}×{f.d/1000:.2f}m",
                      height=30)
             # Rebar note
-            doc.text((x0, y0 + f.L + 90),
-                     f"Ø{int(f.db)} c/{int(f.B/(int(f.B/200)+1))}+Ø{int(f.db)} c/{int(f.L/(int(f.L/200)+1))}",
-                     height=25)
+            if f.status == CalculationStatus.NO_CALCULADO:
+                doc.text((x0, y0 + f.L + 90),
+                         "NO CALCULADO — ARMADO NO DEFINIDO",
+                         height=25)
+            elif f.db is None:
+                # El área SÍ se calculó pero el diámetro no se eligió. El
+                # `else 16.0` que había aquí estampaba un Ø16 que nadie decidió
+                # —el mismo literal recién eliminado de
+                # `footing_drawings.py:48`— mientras el cuadro de zapatas decía
+                # `db: None` tres centímetros más allá: el mismo documento
+                # afirmando y negando el dato, y el dibujo es lo que lee quien
+                # ferralla. Se rotula lo que SÍ se sabe.
+                doc.text((x0, y0 + f.L + 90),
+                         f"As={f.As_x:.0f}/{f.As_y:.0f} mm2/m — Ø NO DEFINIDO",
+                         height=25)
+            else:
+                doc.text((x0, y0 + f.L + 90),
+                         f"Ø{int(f.db)} c/{int(f.B/(int(f.B/200)+1))}+Ø{int(f.db)} c/{int(f.L/(int(f.L/200)+1))}",
+                         height=25)
 
             # Dimension lines
             doc.dimension_linear((x0, y0 - 80), (x0 + f.B, y0 - 80),
@@ -107,8 +129,9 @@ class FoundationPlan:
                 "B_m": round(f.B / 1000, 2),
                 "L_m": round(f.L / 1000, 2),
                 "d_m": round(f.d / 1000, 2),
-                "As_x_mm2_m": round(f.As_x, 1),
-                "As_y_mm2_m": round(f.As_y, 1),
-                "db_mm": f.db,
+                "As_x_mm2_m": round(f.As_x, 1) if f.As_x is not None else None,
+                "As_y_mm2_m": round(f.As_y, 1) if f.As_y is not None else None,
+                "db_mm": f.db if f.db is not None else None,
+                "status": f.status.value if hasattr(f.status, "value") else str(f.status),
             })
         return rows

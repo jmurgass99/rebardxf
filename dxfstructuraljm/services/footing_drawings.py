@@ -44,9 +44,9 @@ def draw_footing_plan(inp: FootingPlanInput, output_path: str | Path) -> dict[st
         FootingData(
             label=f["label"], x=f["x"], y=f["y"],
             B=f["B"], L=f["L"], d=f["d"],
-            As_x=f.get("As_x", 800.0), As_y=f.get("As_y", 800.0),
-            db=f.get("db", 16.0),
-            fc=f.get("fc", 28.0), Fy=f.get("Fy", 420.0),
+            As_x=f.get("As_x"), As_y=f.get("As_y"),
+            db=f.get("db"),
+            fc=f.get("fc"), Fy=f.get("Fy"),
         )
         for f in inp.footings
     ]
