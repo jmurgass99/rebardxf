@@ -80,10 +80,10 @@ def _rectangular_bar_layout(b, h, cover, n_x, n_y, bar_dia, tie_dia):
     return tuple(bars)
 
 
-def build_rectangular_section_design(section_id, b_mm, h_mm, cover_mm,
-                                          n_bars_x, n_bars_y, bar_dia_mm,
-                                          tie_dia_mm, tie_spacing_mm,
-                                          fc_MPa=30.0, fy_MPa=500.0):
+def build_rectangular_section_design(section_id: str, b_mm: float, h_mm: float, cover_mm: float,
+                                          n_bars_x: int, n_bars_y: int, bar_dia_mm: float,
+                                          tie_dia_mm: float, tie_spacing_mm: float,
+                                          fc_MPa: float = 30.0, fy_MPa: float = 500.0) -> RCSectionDesign:
     """Helper para construir RCSectionDesign desde parametros simples."""
     if any(v <= 0 for v in (b_mm, h_mm, cover_mm, bar_dia_mm, tie_dia_mm, tie_spacing_mm)):
         raise ValueError("dimensiones deben ser positivas")
@@ -101,8 +101,8 @@ def build_rectangular_section_design(section_id, b_mm, h_mm, cover_mm,
     )
 
 
-def draw_section_dxf(design, output_path,
-                       scale=1.0, add_dimensions=True, add_annotations=True):
+def draw_section_dxf(design: RCSectionDesign, output_path: str,
+                       scale: float = 1.0, add_dimensions: bool = True, add_annotations: bool = True):
     """Genera el DXF de la seccion transversal con barras + estribo.
 
     Args:
