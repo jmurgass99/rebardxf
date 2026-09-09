@@ -73,6 +73,9 @@ class FootingData:
         if self.As_x is None or self.As_y is None:
             self.status = CalculationStatus.NO_CALCULADO
             self.notes = "NO CALCULADO — ARMADO NO DEFINIDO"
+        elif self.db is None:
+            self.status = CalculationStatus.REQUIERE_REVISION
+            self.notes = f"As={self.As_x:.0f}/{self.As_y:.0f} mm2/m — Ø NO DEFINIDO"
 
 
 def layout_rebar_direction(
@@ -223,8 +226,10 @@ class FoundationPlan:
                          "NO CALCULADO — ARMADO NO DEFINIDO",
                          height=25)
             elif f.db is None:
+                f.status = CalculationStatus.REQUIERE_REVISION
+                f.notes = f"As={f.As_x:.0f}/{f.As_y:.0f} mm2/m — Ø NO DEFINIDO"
                 doc.text((x0, y0 + f.L + 90),
-                         f"As={f.As_x:.0f}/{f.As_y:.0f} mm2/m — Ø NO DEFINIDO",
+                         f"REQUIERE REVISION — {f.notes}",
                          height=25)
             else:
                 st_x, nx, sx_dib, sx_rot, rx = layout_rebar_direction(
@@ -277,7 +282,7 @@ class FoundationPlan:
                 st = CalculationStatus.NO_CALCULADO
                 notes = f.notes or "NO CALCULADO — ARMADO NO DEFINIDO"
             elif f.db is None:
-                st = CalculationStatus.CALCULADO_CUMPLE
+                st = CalculationStatus.REQUIERE_REVISION
                 notes = f"As={f.As_x:.0f}/{f.As_y:.0f} mm2/m — Ø NO DEFINIDO"
             else:
                 st_x, nx, sx_dib, sx_rot, rx = layout_rebar_direction(
