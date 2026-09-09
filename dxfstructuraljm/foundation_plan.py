@@ -60,7 +60,14 @@ class FootingData:
     db: float | None = None
     fc: float | None = None
     Fy: float | None = None
-    status: CalculationStatus = CalculationStatus.CALCULADO_CUMPLE
+    #: SIN default favorable a proposito. Tenerlo en `CALCULADO_CUMPLE` era la
+    #: misma "omision = cumplimiento" que la Proof Obligation prohibe, escrita
+    #: como default de dataclass: `FootingData` no se construye en produccion --es
+    #: API PUBLICA de dibujo-- asi que cualquier consumidor que la instanciara con
+    #: su armado obtenia un veredicto favorable sin haber auditado nada. Un objeto
+    #: de dibujo describe QUE se dibuja; no acredita que el calculo se hiciera.
+    #: `draw_foundation_plan` declara el estado explicitamente tras comprobar.
+    status: CalculationStatus = CalculationStatus.NO_CALCULADO
     design_code: str = "ACI318-19"
     cover_mm: float = 75.0
     d_agg_mm: float | None = None
@@ -221,7 +228,16 @@ class FoundationPlan:
                      height=30)
 
             # Rebar evaluation and drawing
-            if f.status == CalculationStatus.NO_CALCULADO or f.As_x is None or f.As_y is None:
+            # La condición mira los DATOS, no el estado. Antes decía
+            # `f.status == NO_CALCULADO or f.As_x is None or f.As_y is None`, y las
+            # dos mitades eran equivalentes: con el default del dataclass en
+            # `CALCULADO_CUMPLE`, la única forma de llegar aquí en `NO_CALCULADO`
+            # era que `__post_init__` lo hubiera puesto por ese mismo motivo --que
+            # faltara As_x o As_y. Al quitar ese default favorable el estado nace
+            # SIEMPRE en `NO_CALCULADO`, y esa mitad cortocircuitaba todos los
+            # armados, incluidos los completos. Lo que decide si hay armado que
+            # dibujar es si hay armado, y eso lo dice el dato.
+            if f.As_x is None or f.As_y is None:
                 doc.text((x0, y0 + f.L + 90),
                          "NO CALCULADO — ARMADO NO DEFINIDO",
                          height=25)
@@ -278,7 +294,16 @@ class FoundationPlan:
         """Return footing schedule table data."""
         rows = []
         for f in self.footings:
-            if f.status == CalculationStatus.NO_CALCULADO or f.As_x is None or f.As_y is None:
+            # La condición mira los DATOS, no el estado. Antes decía
+            # `f.status == NO_CALCULADO or f.As_x is None or f.As_y is None`, y las
+            # dos mitades eran equivalentes: con el default del dataclass en
+            # `CALCULADO_CUMPLE`, la única forma de llegar aquí en `NO_CALCULADO`
+            # era que `__post_init__` lo hubiera puesto por ese mismo motivo --que
+            # faltara As_x o As_y. Al quitar ese default favorable el estado nace
+            # SIEMPRE en `NO_CALCULADO`, y esa mitad cortocircuitaba todos los
+            # armados, incluidos los completos. Lo que decide si hay armado que
+            # dibujar es si hay armado, y eso lo dice el dato.
+            if f.As_x is None or f.As_y is None:
                 st = CalculationStatus.NO_CALCULADO
                 notes = f.notes or "NO CALCULADO — ARMADO NO DEFINIDO"
             elif f.db is None:
