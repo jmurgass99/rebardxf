@@ -7,7 +7,7 @@ name = "rebardxf"
 version = "1.0.0"
 description = "Automatic structural drawings and rebar detailing to DXF: beam and column sections, footing details, foundation plans, frame elevations, rebar schedules, bar shapes and quantities, title and revision blocks."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Jesús Murgas" }]
 keywords = ["dxf", "rebar", "detailing", "structural-drawings", "ezdxf", "reinforced-concrete", "bar-bending-schedule"]
@@ -16,7 +16,6 @@ classifiers = [
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
