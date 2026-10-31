@@ -1,6 +1,6 @@
 """Tests para cuadro de cuantías."""
 import pytest
-from dxfstructuraljm.rebar_quantities import (
+from rebardxf.rebar_quantities import (
     RebarItem,
     ElementGeometry,
     diameter_mm,

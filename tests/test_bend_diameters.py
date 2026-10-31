@@ -2,7 +2,7 @@
 import math
 import pytest
 
-from dxfstructuraljm.rebar_shapes import (
+from rebardxf.rebar_shapes import (
     min_bend_diameter_aci,
     BAR_DIAMETERS_MM,
     BAR_DIAMETERS_METRIC_MM,

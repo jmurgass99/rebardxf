@@ -14,7 +14,7 @@ from pathlib import Path
 import pytest
 import ezdxf
 
-from dxfstructuraljm.column_schedule_grid import (
+from rebardxf.column_schedule_grid import (
     ColumnStorySpec,
     ColumnScheduleDrawer,
 )

@@ -2,8 +2,8 @@
 from __future__ import annotations
 import pytest
 
-from dxfstructuraljm.exceptions import ConfigurationError, GeometryError
-from dxfstructuraljm.services import (
+from rebardxf.exceptions import ConfigurationError, GeometryError
+from rebardxf.services import (
     ColumnSectionInput, draw_column_section,
     BeamSectionInput, draw_beam_section,
     FootingPlanInput, draw_footing_plan,
@@ -12,9 +12,9 @@ from dxfstructuraljm.services import (
     ColumnRebarInput, draw_column_rebar,
     RebarScheduleInput, build_rebar_schedule,
 )
-from dxfstructuraljm.services.column_drawings import _BarSpec as ColBar
-from dxfstructuraljm.services.footing_drawings import _RebarSpec as FBar
-from dxfstructuraljm.services.schedules import _RebarItem
+from rebardxf.services.column_drawings import _BarSpec as ColBar
+from rebardxf.services.footing_drawings import _RebarSpec as FBar
+from rebardxf.services.schedules import _RebarItem
 
 
 pytestmark = pytest.mark.integration

@@ -1,5 +1,5 @@
 """Tests para revision_block."""
-from dxfstructuraljm.revision_block import (
+from rebardxf.revision_block import (
     RevisionBlockConfig, RevisionEntry, build_revision_block_geometry,
 )
 

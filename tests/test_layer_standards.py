@@ -1,5 +1,5 @@
 """Tests layer standards multi-país."""
-from dxfstructuraljm.layer_standards import STANDARDS, lookup, naming_for
+from rebardxf.layer_standards import STANDARDS, lookup, naming_for
 
 
 def test_5_estandares():

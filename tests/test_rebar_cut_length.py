@@ -3,7 +3,7 @@ import math
 
 import pytest
 
-from dxfstructuraljm.rebar_cut_length import (
+from rebardxf.rebar_cut_length import (
     bend_arc_length,
     bend_deduction,
     cut_length_centerline,

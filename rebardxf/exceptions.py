@@ -1,4 +1,4 @@
-"""Jerarquia de excepciones tipadas de DXFStructuralJm.
+"""Jerarquia de excepciones tipadas de RebarDXF.
 
 Todas heredan de :class:`DXFError`. Algunas tambien multi-heredan de
 ``ValueError`` o ``ImportError`` para mantener compatibilidad con codigo
@@ -16,7 +16,7 @@ __all__ = [
 
 
 class DXFError(Exception):
-    """Excepcion base para errores del paquete DXFStructuralJm."""
+    """Excepcion base para errores del paquete RebarDXF."""
 
 
 class ConfigurationError(DXFError, ValueError):

@@ -12,13 +12,13 @@ import pytest
 hypothesis = pytest.importorskip("hypothesis")
 from hypothesis import given, settings, strategies as st, HealthCheck
 
-from dxfstructuraljm.services import (
+from rebardxf.services import (
     ColumnSectionInput, draw_column_section,
     BeamSectionInput, draw_beam_section,
     WallSectionInput, draw_wall_section,
     RebarScheduleInput, build_rebar_schedule,
 )
-from dxfstructuraljm.services.schedules import _RebarItem
+from rebardxf.services.schedules import _RebarItem
 
 
 pytestmark = pytest.mark.property

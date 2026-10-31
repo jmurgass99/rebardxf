@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""test_golden_analytical_dxf_detailing.py — Fichas Golden analíticas para DXFStructuralJm.
+"""test_golden_analytical_dxf_detailing.py — Fichas Golden analíticas para RebarDXF.
 
-BLOQUE D — GOLDENS DE LA BANDA BAJA (DXFStructuralJm):
+BLOQUE D — GOLDENS DE LA BANDA BAJA (RebarDXF):
 ======================================================
 1. Golden 1: Invariante analítico de recuento exacto de entidades CAD (LINE, CIRCLE, TEXT) en pórticos.
    Cita/Referencia:
@@ -23,7 +23,7 @@ from pathlib import Path
 import ezdxf
 import pytest
 
-from dxfstructuraljm.frame_elevation import FrameElevationDetail
+from rebardxf.frame_elevation import FrameElevationDetail
 
 
 class TestGoldenAnalyticalDXFDetailing:

@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from dxfstructuraljm.integration import autocad_live
+from rebardxf.integration import autocad_live
 
 
 # ---- fake pyautocad inyectado en sys.modules ---------------------------

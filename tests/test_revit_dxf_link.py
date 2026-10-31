@@ -6,7 +6,7 @@ from pathlib import Path
 import ezdxf
 import pytest
 
-from dxfstructuraljm.integration import revit_dxf_link as rdl
+from rebardxf.integration import revit_dxf_link as rdl
 
 
 def test_basic_entities(tmp_path):

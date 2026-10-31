@@ -1,4 +1,4 @@
-"""Bridge dxfstructuraljm <- fastsap: dibuja DXF del armado de seccion RC.
+"""Bridge rebardxf <- fastsap: dibuja DXF del armado de seccion RC.
 
 Toma el resultado de un diseno de seccion (cuantia, barras, estribos)
 calculado en fastsap (section_analysis / rc_design services) y genera
@@ -20,7 +20,7 @@ except ImportError:
     _HAS_EZDXF = False
     ezdxf = None  # type: ignore
 
-log = logging.getLogger("dxfstructuraljm.fastsap_bridge")
+log = logging.getLogger("rebardxf.fastsap_bridge")
 
 
 @dataclass(frozen=True)

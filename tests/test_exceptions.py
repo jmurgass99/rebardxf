@@ -2,11 +2,11 @@
 from __future__ import annotations
 import pytest
 
-from dxfstructuraljm.exceptions import (
+from rebardxf.exceptions import (
     DXFError, ConfigurationError, GeometryError,
     TemplateError, DependencyError,
 )
-from dxfstructuraljm import templates
+from rebardxf import templates
 
 
 pytestmark = pytest.mark.unit
@@ -46,7 +46,7 @@ def test_template_unknown_size_still_raises_value_error_for_backcompat():
 
 
 def test_export_unsupported_version_raises_configuration_error():
-    from dxfstructuraljm.export import save_dxf
+    from rebardxf.export import save_dxf
     import ezdxf
     doc = ezdxf.new(dxfversion="R2018")
     with pytest.raises(ConfigurationError):
@@ -57,7 +57,7 @@ def test_export_unsupported_version_raises_configuration_error():
 
 
 def test_export_missing_doc_raises_dependency_error():
-    from dxfstructuraljm.export import save_dxf
+    from rebardxf.export import save_dxf
     with pytest.raises(DependencyError):
         save_dxf(None, "x.dxf")
     with pytest.raises(ImportError):
@@ -65,7 +65,7 @@ def test_export_missing_doc_raises_dependency_error():
 
 
 def test_exceptions_reexported_from_package():
-    import dxfstructuraljm as pkg
+    import rebardxf as pkg
     assert pkg.DXFError is DXFError
     assert pkg.ConfigurationError is ConfigurationError
     assert pkg.GeometryError is GeometryError

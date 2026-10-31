@@ -2,11 +2,11 @@
 Bridge a AutoCAD vía COM — dibuja directo en la sesión activa.
 
 Requisitos:
-    pip install dxfstructuraljm[autocad]
+    pip install rebardxf[autocad]
     AutoCAD debe estar corriendo en la misma sesión Windows.
 
 Uso típico:
-    from dxfstructuraljm.integration.autocad_live import AutoCADClient
+    from rebardxf.integration.autocad_live import AutoCADClient
 
     with AutoCADClient() as cad:
         cad.set_layer("S-COLU-CONC", color=1)
@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from typing import Any, Iterable, Sequence
 
-from dxfstructuraljm.layer_standards import naming_for, LayerStandard
+from rebardxf.layer_standards import naming_for, LayerStandard
 
 
 # --- helpers ------------------------------------------------------------
@@ -28,7 +28,7 @@ def _import_pyautocad() -> Any:
         import pyautocad  # type: ignore
     except ImportError as exc:  # pragma: no cover
         raise ImportError(
-            "pyautocad no instalado. `pip install dxfstructuraljm[autocad]` "
+            "pyautocad no instalado. `pip install rebardxf[autocad]` "
             "y asegúrate de tener AutoCAD corriendo."
         ) from exc
     return pyautocad

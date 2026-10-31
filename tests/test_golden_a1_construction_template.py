@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 import ezdxf
 
-from dxfstructuraljm.templates_construction import (
+from rebardxf.templates_construction import (
     SheetA1LayoutInput,
     build_a1_sheet_with_titleblock,
     build_footing_template,
@@ -88,7 +88,7 @@ def test_golden_a1_construction_sheet_wrapping_structural_drawings():
 
 def test_golden_templates_construction_missing_key_raises_keyerror():
     """GOLDEN. La ausencia de datos obligatorios ('pos' o 'text') debe lanzar KeyError y no fabricar defaults vacíos."""
-    from dxfstructuraljm.templates_construction import TemplateGeometry
+    from rebardxf.templates_construction import TemplateGeometry
 
     # 1. Error en build_a1_sheet_with_titleblock con texto sin pos
     invalid_geom = TemplateGeometry(texts=[{"text": "Texto sin pos"}])

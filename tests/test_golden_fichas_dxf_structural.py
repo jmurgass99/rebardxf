@@ -26,13 +26,13 @@ from __future__ import annotations
 import math
 import pytest
 
-from dxfstructuraljm.rebar_cut_length import (
+from rebardxf.rebar_cut_length import (
     bend_arc_length,
     bend_deduction,
     cut_length_centerline,
     cut_length_from_outside,
 )
-from dxfstructuraljm.rebar_quantities import (
+from rebardxf.rebar_quantities import (
     RebarItem,
     ElementGeometry,
     diameter_mm,
@@ -40,13 +40,13 @@ from dxfstructuraljm.rebar_quantities import (
     summarize_quantities,
     total_project_steel_kg,
 )
-from dxfstructuraljm.layer_standards import (
+from rebardxf.layer_standards import (
     LayerStandard,
     lookup,
     naming_for,
     STANDARDS,
 )
-from dxfstructuraljm.aia_layers import get_layer
+from rebardxf.aia_layers import get_layer
 
 
 class TestW01686RebarAnchorageAndDetailingGolden:

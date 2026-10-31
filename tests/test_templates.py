@@ -1,5 +1,5 @@
 """Tests plantillas constructivas."""
-from dxfstructuraljm.templates_construction import (
+from rebardxf.templates_construction import (
     FootingTemplateInput, TitleBlockA1Input,
     build_footing_template, build_title_block_a1,
     BeamSectionTemplateInput, build_beam_section_template,

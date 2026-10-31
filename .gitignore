@@ -58,3 +58,8 @@ Documentos de referencia */
 *.db
 *.sqlite
 *.sqlite3
+
+# herramientas locales de agentes
+.claude-flow/
+.claude/
+examples/out/*.dxf

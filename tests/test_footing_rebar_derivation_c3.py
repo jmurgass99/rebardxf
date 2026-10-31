@@ -18,10 +18,10 @@ import pytest
 from pathlib import Path
 import ezdxf
 
-from jmstructural_common.audit_status import CalculationStatus
-from dxfstructuraljm.core import Layer
-from dxfstructuraljm.foundation_plan import FootingData, FoundationPlan
-from dxfstructuraljm.services.footing_drawings import FootingPlanInput, draw_footing_plan
+from rebardxf._common.audit_status import CalculationStatus
+from rebardxf.core import Layer
+from rebardxf.foundation_plan import FootingData, FoundationPlan
+from rebardxf.services.footing_drawings import FootingPlanInput, draw_footing_plan
 
 
 @pytest.mark.parametrize(

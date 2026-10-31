@@ -1,4 +1,4 @@
-"""FastAPI REST de DXFStructuralJm.
+"""FastAPI REST de RebarDXF.
 
 Endpoints:
 - GET  /api/drawings/health
@@ -120,7 +120,7 @@ router = APIRouter()
 @router.get("/api/drawings/health")
 def health() -> dict[str, str]:
     """Healthcheck."""
-    return {"status": "ok", "service": "dxfstructuraljm"}
+    return {"status": "ok", "service": "rebardxf"}
 
 
 @router.post("/api/drawings/column")
@@ -180,7 +180,7 @@ def create_router() -> APIRouter:
 # App standalone (preserva import `from x.api.app import app`)
 # ---------------------------------------------------------------------------
 app = FastAPI(
-    title="DXFStructuralJm REST API",
+    title="RebarDXF REST API",
     version="1.2.0",
     description="Generacion automatica de planos estructurales DXF.",
 )

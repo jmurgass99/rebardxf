@@ -12,7 +12,7 @@ As_y y db son justo lo que se necesita para dibujar-- obtenia un
 degradaba cuando FALTABA algo; con todo presente, el default se quedaba.
 
 Es la misma "omision = cumplimiento" que se quito de
-`foundationdesignjm.analysis.pile_group` (PileForce.status y
+`foundationcalc.analysis.pile_group` (PileForce.status y
 PileGroupResult.status tenian el mismo default), escrita como default de
 dataclass en vez de como rama de codigo.
 
@@ -23,8 +23,8 @@ explicitamente tras comprobar-- y hasta entonces el valor honesto es
 """
 from __future__ import annotations
 
-from dxfstructuraljm.foundation_plan import FootingData
-from jmstructural_common.audit_status import CalculationStatus
+from rebardxf.foundation_plan import FootingData
+from rebardxf._common.audit_status import CalculationStatus
 
 
 def _zapata(**campos) -> FootingData:

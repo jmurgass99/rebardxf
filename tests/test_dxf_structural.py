@@ -1,5 +1,5 @@
 """
-tests/test_dxf_structural.py — Tests for DXFStructuralJm.
+tests/test_dxf_structural.py — Tests for RebarDXF.
 Tests are geometry/logic focused (no DXF file I/O required).
 """
 import pytest
@@ -8,12 +8,12 @@ import math
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from dxfstructuraljm.core import DXFDocument, Layer, HAS_EZDXF
-from dxfstructuraljm.column_section import ColumnDetail
-from dxfstructuraljm.beam_section import BeamDetail
-from dxfstructuraljm.foundation_plan import FoundationPlan, FootingData
-from dxfstructuraljm.rebar_schedule import RebarSchedule
-from dxfstructuraljm.templates import SheetTemplate, TitleBlockInfo, A3, A1
+from rebardxf.core import DXFDocument, Layer, HAS_EZDXF
+from rebardxf.column_section import ColumnDetail
+from rebardxf.beam_section import BeamDetail
+from rebardxf.foundation_plan import FoundationPlan, FootingData
+from rebardxf.rebar_schedule import RebarSchedule
+from rebardxf.templates import SheetTemplate, TitleBlockInfo, A3, A1
 
 
 # ---------------------------------------------------------------------------

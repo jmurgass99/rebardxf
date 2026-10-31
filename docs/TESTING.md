@@ -1,4 +1,4 @@
-# Testing — DXFStructuralJm
+# Testing — RebarDXF
 
 ## Suites disponibles
 
@@ -25,7 +25,7 @@ pytest -m unit
 pytest -m "not slow and not property"
 
 # con cobertura
-pytest --cov=dxfstructuraljm --cov-report=term-missing
+pytest --cov=rebardxf --cov-report=term-missing
 ```
 
 En Windows:
@@ -36,12 +36,12 @@ pwsh -File scripts/run_coverage.ps1
 ## Gate de cobertura
 
 `pyproject.toml` define `fail_under = 75` en `[tool.coverage.report]`.
-La build CI fallara si la cobertura agregada sobre `dxfstructuraljm/`
+La build CI fallara si la cobertura agregada sobre `rebardxf/`
 cae por debajo de 75%.
 
 Modulos excluidos del calculo:
-- `dxfstructuraljm/cli.py`
-- `dxfstructuraljm/_brand.py`
+- `rebardxf/cli.py`
+- `rebardxf/_brand.py`
 
 ## Dependencias de testing
 

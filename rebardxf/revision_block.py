@@ -3,7 +3,7 @@ Cuadro de revisiones estándar para planos estructurales.
 
 Genera un bloque DXF parametrizable: encabezado + filas de revisión
 (número, fecha, descripción, autor). Útil para todos los planos
-generados por DXFStructuralJm.
+generados por RebarDXF.
 """
 from __future__ import annotations
 

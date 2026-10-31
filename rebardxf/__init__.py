@@ -1,11 +1,11 @@
 """
-DXFStructuralJm — Automatic Structural DXF Drawing Generator
+RebarDXF — Automatic Structural DXF Drawing Generator
 =============================================================
 Generates DXF plans from FastSAP / FoundationDesignJm design results.
 
 Usage
 -----
->>> from dxfstructuraljm import ColumnDetail, BeamDetail, FoundationPlan
+>>> from rebardxf import ColumnDetail, BeamDetail, FoundationPlan
 >>> col = ColumnDetail(b=500, h=500, bars=[(25, 8)], cover=40)
 >>> col.draw("column_C1.dxf")
 """

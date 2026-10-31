@@ -7,7 +7,7 @@ fastapi = pytest.importorskip("fastapi")
 httpx_lib = pytest.importorskip("httpx")
 from fastapi.testclient import TestClient
 
-from dxfstructuraljm.api.app import app
+from rebardxf.api.app import app
 
 pytestmark = pytest.mark.api
 

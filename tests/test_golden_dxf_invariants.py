@@ -1,7 +1,7 @@
 """
-test_golden_dxf_invariants.py — Golden Tests e Invariantes para DXFStructuralJm
+test_golden_dxf_invariants.py — Golden Tests e Invariantes para RebarDXF
 ================================================================================
-Declaración: DXFStructuralJm es un motor de dibujo técnico CAD y detallado geométrico
+Declaración: RebarDXF es un motor de dibujo técnico CAD y detallado geométrico
 (no ejecuta análisis físico por elementos finitos, sino generación determinista de DXF,
 planillas de despiece y capas normalizadas).
 
@@ -15,8 +15,8 @@ from __future__ import annotations
 import math
 import pytest
 
-from dxfstructuraljm.layer_standards import STANDARDS, lookup, naming_for
-from dxfstructuraljm.rebar_cut_length import (
+from rebardxf.layer_standards import STANDARDS, lookup, naming_for
+from rebardxf.rebar_cut_length import (
     bend_arc_length,
     bend_deduction,
     cut_length_centerline,

@@ -1,8 +1,8 @@
 """Tests AIA layers + rebar schedule."""
-from dxfstructuraljm.aia_layers import (
+from rebardxf.aia_layers import (
     STRUCTURAL_LAYERS, get_layer,
 )
-from dxfstructuraljm.rebar_schedule_block import (
+from rebardxf.rebar_schedule_block import (
     RebarItem, RebarScheduleConfig, build_schedule_geometry,
 )
 

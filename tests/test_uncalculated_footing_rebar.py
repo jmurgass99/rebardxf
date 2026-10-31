@@ -10,10 +10,10 @@ from __future__ import annotations
 
 import pytest
 from pathlib import Path
-from jmstructural_common.audit_status import CalculationStatus
-from dxfstructuraljm.core import Layer
-from dxfstructuraljm.foundation_plan import FootingData, FoundationPlan
-from dxfstructuraljm.services.footing_drawings import FootingPlanInput, draw_footing_plan
+from rebardxf._common.audit_status import CalculationStatus
+from rebardxf.core import Layer
+from rebardxf.foundation_plan import FootingData, FoundationPlan
+from rebardxf.services.footing_drawings import FootingPlanInput, draw_footing_plan
 
 
 def test_footing_without_rebar_is_no_calculado_and_draws_no_rebar(tmp_path: Path):
@@ -113,8 +113,8 @@ def test_diametro_ausente_no_se_estampa_como_16(tmp_path):
     """
     import ezdxf
 
-    from dxfstructuraljm.core import Layer
-    from dxfstructuraljm.services.footing_drawings import (
+    from rebardxf.core import Layer
+    from rebardxf.services.footing_drawings import (
         FootingPlanInput, draw_footing_plan,
     )
 
@@ -145,7 +145,7 @@ def test_diametro_presente_se_rotula_normalmente(tmp_path):
     """Control: con `db` dado, el rotulo no cambia."""
     import ezdxf
 
-    from dxfstructuraljm.services.footing_drawings import (
+    from rebardxf.services.footing_drawings import (
         FootingPlanInput, draw_footing_plan,
     )
 

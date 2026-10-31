@@ -1,4 +1,4 @@
-"""Tests del bridge dxfstructuraljm <- fastsap."""
+"""Tests del bridge rebardxf <- fastsap."""
 from __future__ import annotations
 import os
 import tempfile
@@ -6,7 +6,7 @@ import pytest
 
 ezdxf = pytest.importorskip("ezdxf")
 
-from dxfstructuraljm.integration import (
+from rebardxf.integration import (
     RCSectionDesign, RebarBar,
     build_rectangular_section_design, draw_section_dxf,
 )

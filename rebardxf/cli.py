@@ -1,4 +1,4 @@
-"""CLI minimo para DXFStructuralJm."""
+"""CLI minimo para RebarDXF."""
 from __future__ import annotations
 import argparse
 import sys
@@ -8,7 +8,7 @@ from . import __version__
 
 def main(argv: list[str] | None = None) -> int:  # pragma: no cover
     """Punto de entrada del CLI."""
-    p = argparse.ArgumentParser(prog="dxfstructuraljm")
+    p = argparse.ArgumentParser(prog="rebardxf")
     p.add_argument("--version", action="version", version=__version__)
     p.add_argument("--serve", action="store_true",
                    help="Levantar el REST API con uvicorn (requiere extras [api])")

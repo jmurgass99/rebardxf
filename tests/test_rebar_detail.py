@@ -3,10 +3,10 @@ from __future__ import annotations
 import pytest
 import ezdxf
 
-from dxfstructuraljm.column_rebar_detail import (
+from rebardxf.column_rebar_detail import (
     ColumnRebarBar, ColumnRebarDetail, render_column_rebar_detail,
 )
-from dxfstructuraljm.footing_rebar_detail import (
+from rebardxf.footing_rebar_detail import (
     FootingRebarDetail, render_footing_rebar_detail,
 )
 

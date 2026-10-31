@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import math
 from .core import DXFDocument, Layer
-from jmstructural_common.audit_status import CalculationStatus
+from rebardxf._common.audit_status import CalculationStatus
 
 
 @dataclass

@@ -1,4 +1,4 @@
-"""REST API para DXFStructuralJm (FastAPI).
+"""REST API para RebarDXF (FastAPI).
 
 Importar :func:`get_app` lazy para no requerir fastapi en instalaciones
 sin extras ``[api]``.

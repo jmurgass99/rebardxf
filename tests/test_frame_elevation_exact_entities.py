@@ -16,7 +16,7 @@ from pathlib import Path
 import ezdxf
 import pytest
 
-from dxfstructuraljm.frame_elevation import FrameElevationDetail
+from rebardxf.frame_elevation import FrameElevationDetail
 
 
 class TestFrameElevationExactEntities:
