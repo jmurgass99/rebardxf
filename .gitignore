@@ -63,3 +63,6 @@ Documentos de referencia */
 .claude-flow/
 .claude/
 examples/out/*.dxf
+
+# salidas dxf que los tests/README escriben en la raiz
+/*.dxf
