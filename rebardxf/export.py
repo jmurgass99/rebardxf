@@ -56,13 +56,13 @@ def save_dxf(doc, path: str | Path,
         except Exception:
             pass
 
-    # Pin DXF version if different from current
-    try:
-        if getattr(doc, "dxfversion", None) and doc.dxfversion != _ver_code(dxfversion):
-            # ezdxf < 1.0 used different API; try generic save
-            pass
-    except Exception:
-        pass
+    # Pin DXF version. Hasta la 1.2.0 este bloque era un `pass`: el parámetro
+    # `dxfversion` se validaba y se ignoraba, y el fichero salía siempre con la
+    # versión del documento (R2018 por defecto) aunque se pidiera R2010 para un
+    # visor antiguo. ezdxf admite asignar `doc.dxfversion` antes de guardar.
+    target = _ver_code(dxfversion)
+    if getattr(doc, "dxfversion", None) and doc.dxfversion != target:
+        doc.dxfversion = target
 
     doc.saveas(str(path))
     return str(path)

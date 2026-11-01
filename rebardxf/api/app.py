@@ -18,6 +18,7 @@ from fastapi import APIRouter, FastAPI, HTTPException, Query
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel, Field
 
+from .. import __version__
 from ..exceptions import DXFError, ConfigurationError, GeometryError
 from ..services.column_drawings import (
     ColumnSectionInput, draw_column_section,
@@ -181,7 +182,7 @@ def create_router() -> APIRouter:
 # ---------------------------------------------------------------------------
 app = FastAPI(
     title="RebarDXF REST API",
-    version="1.2.0",
+    version=__version__,
     description="Generacion automatica de planos estructurales DXF.",
 )
 app.include_router(router)

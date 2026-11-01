@@ -53,5 +53,5 @@ __all__ = [
     "FootingRebarDetail", "render_footing_rebar_detail",
     "ColumnStorySpec", "ColumnScheduleStats", "ColumnScheduleDrawer",
 ]
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 

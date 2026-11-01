@@ -21,7 +21,9 @@ class ColumnDetail:
     cover : float  clear cover [mm] (to stirrup face)
     bars : list[tuple[float, int]]
         List of (diameter [mm], count) tuples.
-        e.g. [(25, 8)] = 8Ø25 bars
+        e.g. [(25, 8)] = 8Ø25 bars. The bars are spread around the perimeter
+        with corners always occupied; an odd total repeats the last position
+        (there is no symmetric perimeter layout for an odd count).
     db_stirrup : float  stirrup diameter [mm]
     Fy : float  steel yield strength [MPa]
     fc : float  concrete compressive strength [MPa]
@@ -69,9 +71,17 @@ class ColumnDetail:
             # Corners only
             return [(xi, yi), (xi + wi, yi), (xi + wi, yi + hi), (xi, yi + hi)]
 
-        # Distribute around perimeter
+        # Distribute around perimeter: n_b bars on each horizontal face (corners
+        # included) and n_h on each vertical face (corners included), so that
+        #     2·n_b + 2·(n_h − 2) = total   ⇒   n_h = total/2 − n_b + 2.
+        # Hasta la 1.2.0 se usaba n_h = (total − 4·(n_b − 2))//2, que solo coincide
+        # con la identidad cuando n_b = 2: con 12, 14 o 16 barras faltaban 2–4
+        # posiciones y se rellenaban repitiendo la última, de modo que el DXF
+        # dibujaba varias barras superpuestas en una esquina (12Ø20 se veía como
+        # 10 círculos) mientras el rótulo y As decían 12. Con total impar la
+        # última barra se repite, no hay reparto simétrico posible: ver docstring.
         n_per_side_b = max(2, round(self.b / (self.h + self.b) * total / 2))
-        n_per_side_h = max(2, (total - 2 * (n_per_side_b - 2) * 2) // 2)
+        n_per_side_h = max(2, total // 2 - n_per_side_b + 2)
 
         pts = []
         # Bottom

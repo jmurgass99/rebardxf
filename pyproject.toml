@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rebardxf"
-version = "1.0.0"
-description = "Automatic structural drawings and rebar detailing to DXF: beam and column sections, footing details, foundation plans, frame elevations, rebar schedules, bar shapes and quantities, title and revision blocks."
+version = "1.2.0"
+description = "Planos estructurales y despiece de armaduras a DXF con ezdxf: secciones de viga, pilar y muro, despiece de pilares y zapatas, planta de cimentación con estado de cálculo, alzados de pórtico con recuento exacto de entidades, cuadro de pilares, formas y longitudes de corte (ACI 318-19 §25.3, BS 8666), planillas y cuantías, cajetines A1/A3 en espacio papel, capas AIA/ISO 13567, enlace Revit y API REST. 25 casos de uso ejecutados."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
 authors = [{ name = "Jesús Murgas" }]
-keywords = ["dxf", "rebar", "detailing", "structural-drawings", "ezdxf", "reinforced-concrete", "bar-bending-schedule"]
+keywords = ["dxf", "ezdxf", "rebar", "rebar-detailing", "bar-bending-schedule", "structural-drawings", "reinforced-concrete", "foundation-plan", "column-schedule", "aci-318", "bs-8666", "aia-layers", "autocad", "revit", "loadpath"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
