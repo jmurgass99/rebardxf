@@ -1,0 +1,13 @@
+Cuadro de aceros: 5 marcas → 12 rectángulos/líneas, 42 textos, total 117.2 kg; caja 125 × 56 mm de papel en (600, 60)
+  marca 1: Ø20 × 6350 mm × 3 = 19.05 m → 47.0 kg (0,00617·Ø²·L; exacto π/4·7850 = 0,006165·Ø²)
+  marca 2: Ø16 × 6350 mm × 2 = 12.70 m → 20.1 kg (0,00617·Ø²·L; exacto π/4·7850 = 0,006165·Ø²)
+  marca 3: Ø16 × 2400 mm × 2 = 4.80 m → 7.6 kg (0,00617·Ø²·L; exacto π/4·7850 = 0,006165·Ø²)
+  marca 4: Ø10 × 1544 mm × 42 = 64.85 m → 40.0 kg (0,00617·Ø²·L; exacto π/4·7850 = 0,006165·Ø²)
+  marca 5: Ø8 × 540 mm × 12 = 6.48 m → 2.6 kg (0,00617·Ø²·L; exacto π/4·7850 = 0,006165·Ø²)
+  Cabeceras: ['Marca', 'φ (mm)', 'L (mm)', 'Cant.', 'Σ L (m)', 'Σ peso (kg)']; fila de totales: ['TOTAL', '117.2']
+
+Cuadro de revisiones: 3 revisiones → 7 rectángulos/líneas, 16 textos; caja 135 × 32 mm
+
+DXF cuadros_aceros_revisiones.dxf: {'LWPOLYLINE': 2, 'LINE': 17, 'TEXT': 58} (los dos cuadros en milímetros de papel, listos para pegar en un layout)
+
+La geometría es una lista de rectángulos (alto 0 = línea horizontal, ancho 0 = vertical) y textos con posición y altura: se prueba sin ezdxf y se dibuja con cualquier backend. El cuadro de aceros aquí no deduce longitudes de corte ni solapes; pesa con 0,00617·Ø² (0,07 % sobre el exacto).

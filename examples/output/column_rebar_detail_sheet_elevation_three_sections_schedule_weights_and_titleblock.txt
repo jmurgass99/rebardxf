@@ -1,0 +1,15 @@
+Pilar C-7 500 × 500 mm, H = 3600 mm, recubrimiento 40 mm
+  marca   Ø  L [m]   n forma    kg/m peso [kg]
+     L1  20   4.20   8    L1   2.466      82.9
+     L2  16   1.20   4    L1   1.578       7.6
+     E1  10   1.84  26    51   0.617      29.5
+     E2  10   1.84   6    51   0.617       6.8
+  TOTAL = 126.7 kg; comprobación L1: 7850·π·0,02²/4·4,20·8 = 82.9 kg; Ø10 pesa 0.617 kg/m (tabla 0,617)
+
+DXF C-7_despiece.dxf: {'LWPOLYLINE': 33, 'LINE': 2, 'TEXT': 39, 'CIRCLE': 12}; por capa {'CONCRETO': 4, 'ARMADURA': 14, 'TEXTO': 63, 'COTAS': 1, 'ESTRIBO': 3, 'CAJETIN': 1}
+  Textos de cabecera y planilla: ['ALZADO C-7', 'PLANILLA DE ARMADURA', 'TOTAL = 126.7 kg', 'Proyecto: Edificio de oficinas — Bloque B', 'Elemento: C-7']
+  Secciones: ['BASE', 'MEDIA', 'CABEZA']; círculos dibujados = 12 = 3 secciones × 4 esquinas (las 12 barras reales no se reparten: límite del generador)
+
+Servicio draw_column_rebar C-8: total 173.65 kg, 1 marcas longitudinales, 1 de estribo → C-8_despiece.dxf
+
+La planilla y el cajetín salen en el mismo espacio modelo que el alzado (unidades mm); para una lámina con cajetín en espacio papel se usa `SheetTemplate.apply_to_layout` sobre este documento.

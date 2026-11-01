@@ -1,0 +1,15 @@
+draw_footing_plan → planta_servicio.dxf: 4 zapatas, 163 entidades internas {'lines': 143, 'circles': 0, 'texts': 12, 'rects': 8}
+
+Cuadro devuelto (listo para JSON):
+  zapata      B × L × d [m]  A_s,x  A_s,y    Ø            estado  notas
+    Z-A1 2.20 × 2.20 × 0.55 1000.0 1000.0 16.0  CALCULADO_CUMPLE  
+    Z-A2 2.60 × 2.60 × 0.65 1300.0 1300.0 16.0  CALCULADO_CUMPLE  
+    Z-B1 2.00 × 2.60 × 0.55  900.0 1200.0 12.0  CALCULADO_CUMPLE  
+    Z-B2 2.60 × 2.60 × 0.65   None   None None      NO_CALCULADO  NO CALCULADO — ARMADO NO DEFINIDO
+
+  JSON del cuadro: 656 caracteres; primera fila: [{"label": "Z-A1", "B_m": 2.2, "L_m": 2.2, "d_m": 0.55, "As_x_mm2_m": 1000.0, "As_y_mm2_m": 1000.0, "db_mm": 16.0, "stat…
+  Validación (sin canto d) → ConfigurationError: Zapata sin campo obligatorio 'd'
+  Validación (B negativo) → GeometryError: Dimensiones invalidas en Z-Y
+  Validación (lista vacía) → ConfigurationError: Debe haber al menos una zapata
+
+El servicio es la frontera que usa la API REST (`/api/drawings/footing`): los errores tipados se traducen a 422 y el cuadro viaja tal cual. Z-B2 sin A_s sale NO_CALCULADO en el cuadro y «ARMADO NO DEFINIDO» en el plano.

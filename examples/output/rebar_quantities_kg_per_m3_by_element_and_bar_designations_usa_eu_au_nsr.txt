@@ -1,0 +1,27 @@
+Designación americana (ASTM A615):
+  elemento acero [kg] hormigón [m³] cuantía [kg/m³]
+       C-1      161.1         0.900             179
+       C-2      100.2         0.576             174
+       V-1      114.9         0.900             128
+       Z-1      108.6         3.456              31
+  Total del proyecto: 484.8 kg
+
+Mismo armado en métrico (EU, Ø25/20/16/10):
+       C-1      159.9 kg →   178 kg/m³
+       C-2      110.1 kg →   191 kg/m³
+       V-1      125.8 kg →   140 kg/m³
+       Z-1      110.0 kg →    32 kg/m³
+  Total: 505.8 kg (+4.3 % frente al americano: #8 = 25,4 mm y #3 = 9,5 mm no son Ø25 y Ø10 exactos)
+
+Equivalencias y kg/m por código:
+    USA Ø [mm]   kg/m |   EU   kg/m |   AU Ø [mm]   kg/m |  NSR Ø [mm]
+     #3    9.5  0.556 |   10  0.617 |  N12     12  0.888 |   #3    9.5
+     #4   12.7  0.994 |   12  0.888 |  N12     12  0.888 |   #4   12.7
+     #5   15.9  1.559 |   16  1.578 |  N16     16  1.578 |   #5   15.9
+     #6   19.1  2.249 |   20  2.466 |  N20     20  2.466 |   #6   19.1
+     #8   25.4  3.978 |   25  3.853 |  N24     24  3.551 |   #8   25.4
+    #10   32.3  6.432 |   32  6.313 |  N32     32  6.313 |   25   25.0
+
+  Designación de otro código → ValueError: Designación N12 no encontrada para EU
+
+Las cuantías orientativas de pilar (120–200 kg/m³), viga (90–150) y zapata (30–70) sirven para contrastar un despiece: un elemento fuera de rango suele tener una longitud o un conteo mal copiado. El módulo no deduce longitudes ni solapes; pesa lo que se le da.

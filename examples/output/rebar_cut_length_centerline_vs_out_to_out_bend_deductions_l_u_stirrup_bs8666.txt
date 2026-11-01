@@ -1,0 +1,20 @@
+Arco por la fibra neutra y deducción out-to-out por doblez [mm]:
+    Ø D cerco arco 90° ded. 90° arco 135° ded. 135° | D gancho arco 90° ded. 90° arco 180°
+    8    32.0     31.4     16.6      47.1      68.8 |     48.0     44.0     20.0      88.0
+   10    40.0     39.3     20.7      58.9      85.9 |     60.0     55.0     25.0     110.0
+   12    48.0     47.1     24.9      70.7     103.1 |     72.0     66.0     30.0     131.9
+   16    64.0     62.8     33.2      94.2     137.5 |     96.0     88.0     40.0     175.9
+   20   120.0    110.0     50.0     164.9     221.3 |    120.0    110.0     50.0     219.9
+   25   150.0    137.4     62.6     206.2     276.7 |    150.0    137.4     62.6     274.9
+  La deducción a 90° crece con Ø y con D: para Ø16 de gancho (D = 96) son 40 mm por esquina, el error clásico de la planilla que suma cotas exteriores.
+
+Barra en L (código 11) Ø16, cotas exteriores 1200 + 400, D = 96 mm (r = 48):
+  tramos rectos al eje 1136 + 336 + arco 88.0 = 1560.0 mm; desde cotas exteriores 1600 − 40.0 = 1560.0 mm → coinciden; suma ingenua de cotas: 1600 (+40 mm de más)
+
+Barra en U (código 21) Ø12, cotas 450 + 240 + 450, D = 72: longitud de corte 1079.9 mm = 1140 − 2·30.0
+
+Cerco cerrado (código 51) 240 × 440 exteriores (sección 300 × 500, c = 30), Ø10, D = 40 mm, colas de 135° = 75 mm:
+  4 tramos rectos al eje [180, 380, 180, 380] + 3 arcos de 90° + 2 arcos de 135° + 2 colas = 1506 mm; perímetro exterior 1360 + 2 colas = 1510 (la planilla rápida); diferencia +4 mm
+  Peso por cerco Ø10: 0.928 kg; en una viga con 60 cercos la planilla rápida pide 0.3 m de más.
+
+Medir por la fibra neutra o restar la deducción es lo mismo; sumar cotas exteriores no. Con D pequeño (cercos Ø10, D = 40) la diferencia son milímetros por pieza; con Ø25 y D = 150 son 6 cm por doblez, 12 cm en una barra en U.

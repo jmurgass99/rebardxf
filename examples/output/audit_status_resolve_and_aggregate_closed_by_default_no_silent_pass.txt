@@ -1,0 +1,30 @@
+Condiciones de evidencia (6): ('demand_present', 'capacity_present', 'analysis_executed', 'geometry_present', 'material_present', 'reinforcement_present')
+
+  caso                                                       estado
+  utilización 0,85 con las seis evidencias         CALCULADO_CUMPLE
+  utilización 1,20 con las seis evidencias          CALCULADO_FALLA
+  utilización 0,85 sin declarar nada                   NO_CALCULADO
+  utilización 0,85, reinforcement_present=False        NO_CALCULADO
+  utilización 0,85, falta f_c en missing_inputs        NO_CALCULADO
+  utilización 0,85, método no soportado           REQUIERE_REVISION
+  sin número (None) con evidencias                REQUIERE_REVISION
+  ratio +inf (capacidad cero)                     REQUIERE_REVISION
+  ratio NaN                                       REQUIERE_REVISION
+  ratio −0,2 (signo invertido)                    REQUIERE_REVISION
+  ratio 1 + 6,66e-16 (tres ULP)                    CALCULADO_CUMPLE
+  ratio 1,001 (0,1 % de exceso)                     CALCULADO_FALLA
+  demanda cero con evidencias                      CALCULADO_CUMPLE
+
+Agregación de estados:
+  [] (ninguna comprobación)                → NO_CALCULADO
+  [CUMPLE, CUMPLE, CUMPLE]                 → CALCULADO_CUMPLE
+  [CUMPLE, NO_APLICA]                      → CALCULADO_CUMPLE
+  [NO_APLICA, NO_APLICA]                   → NO_APLICA
+  [CUMPLE, REQUIERE_REVISION]              → REQUIERE_REVISION
+  [CUMPLE, NO_CALCULADO]                   → NO_CALCULADO
+  [CUMPLE, NO_CALCULADO, FALLA]            → CALCULADO_FALLA
+  [REQUIERE_REVISION, NO_CALCULADO]        → NO_CALCULADO
+  ['CALCULADO_CUMPLE', 'texto raro']       → REQUIERE_REVISION
+
+  all([]) en Python es True: por eso la lista vacía se trata aparte y da NO_CALCULADO; un plano con cero comprobaciones no está aprobado, está sin comprobar.
+Este contrato es el que usan `FootingData`/`FoundationPlan` (estado inicial NO_CALCULADO, nunca un armado por defecto) y el que debería envolver cualquier verificación que termine en un plano: la ausencia se propaga como ausencia.

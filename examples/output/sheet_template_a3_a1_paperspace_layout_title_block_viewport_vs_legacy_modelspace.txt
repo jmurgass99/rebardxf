@@ -1,0 +1,10 @@
+Hoja A3 420 × 297 mm; layouts del documento: ['Model', 'Layout1', 'A3_Sheet']
+  Espacio papel «A3_Sheet»: {'VIEWPORT': 2, 'LWPOLYLINE': 4, 'LINE': 5, 'TEXT': 25} (borde, marco, cajetín 3 × 4, logo, ventana); modelo: {'LINE': 8, 'HATCH': 1, 'CIRCLE': 12, 'TEXT': 3, 'DIMENSION': 1} (la sección del pilar en mm, intacta)
+  Ventana: centro papel (140.0, 148.5) mm, tamaño 230 × 277 mm, vista del modelo centrada en (250, 250, 0) con altura 2770 mm → escala 1:10
+  Cajetín: ['Edificio de oficinas — Bloque B', 'Promotora XYZ', 'S-301 Detalle pilar P-1', '1:10', 'B', 'JM']
+
+Añadida una A1 al mismo documento: layouts ['Model', 'Layout1', 'A3_Sheet', 'A1_Sheet']; A1_Sheet tiene 36 entidades (cajetín de 180 × 50 mm en A1/A2/A0, 150 × 40 en A3/A4)
+  Método heredado draw_in_modelspace: DeprecationWarning — «SheetTemplate.draw_in_modelspace() is deprecated; use SheetTemplate.apply_to_lay…»; añade 29 líneas al contador del modelo
+  Tamaño desconocido → TemplateError: Tamano de hoja desconocido 'B2'
+
+El cajetín en espacio papel se imprime a 1:1 y la escala la fija la ventana (view_height = alto de la ventana × denominador): para 1:10 en A3 la vista tiene 2770 mm de alto. El texto «v1.0» de la celda de marca es fijo y el logo es un hueco: dos detalles cosméticos que el usuario sustituye en su plantilla.

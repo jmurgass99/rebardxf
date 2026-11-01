@@ -1,0 +1,11 @@
+Cuadro 4 pilares × 4 plantas = 16 celdas (15 con pilar, 1 con «-»)
+  Estadísticas: 132 líneas, 40 textos, 110 círculos → 282 entidades
+  Círculos = Σ n_bars = 110 → coincide
+  Líneas = cuadrícula (6 horizontales + 6 verticales) + 8 por celda con pilar (15) = 132 → coincide
+  Textos = 1 + 4 + 4 + 2·15 + 1 = 40 → coincide
+  DXF releído: {'LINE': 132, 'TEXT': 40, 'CIRCLE': 110}; capas ['S-COL-CONC', 'S-COL-LINE', 'S-COL-REBAR', 'S-COL-TEXT']
+  Celda P-1 / Cimentación: ['50x50 cm - 12Ø25', '50x50 cm - 8Ø25'], ['e: Ø10 c/10cm']
+  n_bars = 5 (impar) → ValueError: spec.n_bars must be an even integer >= 4 for symmetric column reinforc…
+  n_bars = 2 (menos de 4) → ValueError: spec.n_bars must be at least 4, got 2 for X…
+
+La miniatura reparte las barras intermedias solo en las caras superior e inferior: para 12Ø25 dibuja 4 esquinas + 4 + 4; el pilar rectangular 600 × 400 con 10 barras sale con 3 intermedias por cara larga. Es un cuadro de obra (dimensiones en cm, estribo en cm), no un despiece: el despiece va en `column_rebar_detail`.

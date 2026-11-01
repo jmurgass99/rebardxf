@@ -1,0 +1,10 @@
+Viga V-101: 300 × 500 mm, recubrimiento 30 mm, estribo Ø10
+  Armado superior [(16.0, 2)] → A_s = 402.1 mm² (2·π·16²/4 = 402.1); inferior [(20.0, 3)] → A_s = 942.5 mm² (3·π·20²/4 = 942.5)
+  Posiciones x de las 3 barras inferiores (ancho útil b − 2·(c + Ø_e + Ø/2) = 200 mm): [50, 150, 250] mm; cota y = c + Ø_e + Ø/2 = 50 mm
+  Cuantía ρ = A_s,inf/(b·d) con d = h − c − Ø_e − Ø/2 = 450 mm → 0.70 %
+
+DXF V-101_section.dxf: contador interno {'lines': 8, 'circles': 5, 'texts': 2, 'rects': 2}; releído con ezdxf {'LINE': 8, 'HATCH': 1, 'CIRCLE': 5, 'TEXT': 2}; verify → {'ok': True, 'errors': 0, 'fixes': 0, 'dxfversion': 'AC1032', 'n_modelspace_entities': 16}
+  Capas presentes: ['ARMADURA', 'CONCRETO', 'ESTRIBO', 'RELLENO', 'TEXTO']
+  Textos: ['V-101', 'As,top=402 mm²  As,bot=942 mm²']
+
+Viga V-102 con capa inferior 2Ø20 + 1Ø16: A_s,inf = 829.4 mm² (correcto), pero los radios dibujados son [8.0, 10.0] mm: las tres barras inferiores salen con Ø20 porque el dibujo usa el primer diámetro de cada capa. Para mezclar diámetros en el plano, usa `integration.fastsap_bridge.RCSectionDesign` (barra a barra).
