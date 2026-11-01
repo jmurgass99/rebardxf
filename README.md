@@ -1,5 +1,7 @@
 # rebardxf — planos de hormigón armado y despiece de armaduras a DXF con ezdxf
 
+**Español** · [English](README.en.md) · [Português](README.pt.md) · [Italiano](README.it.md)
+
 Secciones de viga, pilar y muro con su armado, planos de despiece de pilares y zapatas con planilla y cajetín, planta de cimentación que deriva el reparto de barras desde A_s y declara el estado de cálculo, alzados de pórtico con recuento exacto de entidades, cuadro de pilares por plantas, formas de barra con los diámetros de doblado de ACI 318-19 §25.3, longitudes de corte por fibra neutra (BS 8666), planillas y cuantías, cajetines A1/A3 en espacio papel, capas en castellano y AIA/ISO 13567, exportación con versión DXF fija, DXF para Revit Link CAD y API REST. Única dependencia: `ezdxf`.
 
 [![CI](https://github.com/jmurgass99/rebardxf/actions/workflows/ci.yml/badge.svg)](https://github.com/jmurgass99/rebardxf/actions/workflows/ci.yml)
