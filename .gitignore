@@ -60,8 +60,6 @@ Documentos de referencia */
 *.sqlite3
 
 # herramientas locales de agentes
-.claude-flow/
-.claude/
 examples/out/*.dxf
 
 # salidas dxf que los tests/README escriben en la raiz
