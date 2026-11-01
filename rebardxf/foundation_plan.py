@@ -74,6 +74,7 @@ class FootingData:
     s_max_override_mm: float | None = None
     s_min_override_mm: float | None = None
     s_commercial_step_mm: float = 25.0
+    snap_to_commercial_step: bool = False
     notes: str = ""
 
     def __post_init__(self) -> None:
@@ -96,6 +97,7 @@ def layout_rebar_direction(
     s_max_override_mm: float | None = None,
     s_min_override_mm: float | None = None,
     s_commercial_step_mm: float = 25.0,
+    snap_to_commercial_step: bool = False,
 ) -> tuple[CalculationStatus, int, float, float, str]:
     """Calcula el despiece coordinado para una dirección de zapata.
 
@@ -161,11 +163,22 @@ def layout_rebar_direction(
             f"ancho útil <= 0 ({dim_mm}mm <= 2*{cover_mm}mm)",
         )
 
-    # Número de espacios para que s_actual <= s_req
-    n_spaces = max(1, math.ceil(w_eff / s_req))
+    # Número de espacios para que s_actual <= s_req (o al múltiplo comercial inferior si se activa)
+    s_target = (
+        math.floor(s_req / s_commercial_step_mm) * s_commercial_step_mm
+        if (snap_to_commercial_step and s_commercial_step_mm > 0)
+        else s_req
+    )
+    if s_target <= 0:
+        s_target = s_req
+    n_spaces = max(1, math.ceil(w_eff / s_target))
     n_bars = n_spaces + 1
     s_dib = w_eff / n_spaces
-    s_rot = round(s_dib)
+    s_rot = (
+        float(math.floor(s_dib / s_commercial_step_mm) * s_commercial_step_mm)
+        if (snap_to_commercial_step and s_commercial_step_mm > 0)
+        else round(s_dib)
+    )
 
     if s_dib < s_min:
         return (
@@ -251,12 +264,12 @@ class FoundationPlan:
                 st_x, nx, sx_dib, sx_rot, rx = layout_rebar_direction(
                     f.B, f.d, f.As_x, f.db, f.cover_mm, f.design_code,
                     f.d_agg_mm, f.s_max_override_mm, f.s_min_override_mm,
-                    f.s_commercial_step_mm,
+                    f.s_commercial_step_mm, f.snap_to_commercial_step,
                 )
                 st_y, ny, sy_dib, sy_rot, ry = layout_rebar_direction(
                     f.L, f.d, f.As_y, f.db, f.cover_mm, f.design_code,
                     f.d_agg_mm, f.s_max_override_mm, f.s_min_override_mm,
-                    f.s_commercial_step_mm,
+                    f.s_commercial_step_mm, f.snap_to_commercial_step,
                 )
 
                 if st_x == CalculationStatus.REQUIERE_REVISION or st_y == CalculationStatus.REQUIERE_REVISION:
@@ -313,12 +326,12 @@ class FoundationPlan:
                 st_x, nx, sx_dib, sx_rot, rx = layout_rebar_direction(
                     f.B, f.d, f.As_x, f.db, f.cover_mm, f.design_code,
                     f.d_agg_mm, f.s_max_override_mm, f.s_min_override_mm,
-                    f.s_commercial_step_mm,
+                    f.s_commercial_step_mm, f.snap_to_commercial_step,
                 )
                 st_y, ny, sy_dib, sy_rot, ry = layout_rebar_direction(
                     f.L, f.d, f.As_y, f.db, f.cover_mm, f.design_code,
                     f.d_agg_mm, f.s_max_override_mm, f.s_min_override_mm,
-                    f.s_commercial_step_mm,
+                    f.s_commercial_step_mm, f.snap_to_commercial_step,
                 )
                 if st_x == CalculationStatus.REQUIERE_REVISION or st_y == CalculationStatus.REQUIERE_REVISION:
                     st = CalculationStatus.REQUIERE_REVISION

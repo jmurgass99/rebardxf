@@ -11,21 +11,6 @@ from .core import DXFDocument, Layer
 class BeamDetail:
     """
     RC beam detail: cross-section + simplified elevation with stirrup spacing.
-
-    Parameters
-    ----------
-    b : float  beam width [mm]
-    h : float  beam total height [mm]
-    cover : float  clear cover [mm]
-    bars_top : list[tuple[float, int]]  top bars [(diameter, count)]
-    bars_bot : list[tuple[float, int]]  bottom bars
-    db_stirrup : float  stirrup diameter [mm]
-    s_critical : float  stirrup spacing in critical zone [mm]
-    s_central : float  stirrup spacing in central zone [mm]
-    span : float  beam span [mm]
-    lc_critical : float  length of critical zone [mm]
-    label : str  element label
-    fc, Fy : float  material strengths [MPa]
     """
     b: float
     h: float
@@ -47,9 +32,11 @@ class BeamDetail:
     def as_bot(self) -> float:
         return sum(math.pi * db**2 / 4 * n for db, n in self.bars_bot)
 
-    def _bar_x_positions(self, n: int) -> list[float]:
+    def _bar_x_positions(self, n: int, db_ref: float | None = None) -> list[float]:
         """Evenly spaced x positions for n bars in the section width."""
-        d = self.cover + self.db_stirrup + max(db for db, _ in self.bars_bot) / 2
+        if db_ref is None:
+            db_ref = max(db for db, _ in self.bars_bot)
+        d = self.cover + self.db_stirrup + db_ref / 2
         usable = self.b - 2 * d
         if n == 1:
             return [self.b / 2]
@@ -78,16 +65,16 @@ class BeamDetail:
         # Top bars
         d_top = self.cover + self.db_stirrup
         n_top = sum(n for _, n in self.bars_top)
-        db_t  = self.bars_top[0][0]
+        db_t  = max(db for db, _ in self.bars_top)
         y_top = y0 + self.h - d_top - db_t / 2
-        for x in self._bar_x_positions(n_top):
+        for x in self._bar_x_positions(n_top, db_ref=db_t):
             doc.draw_rebar_circle(x0 + x, y_top, db_t, layer=Layer.REBAR)
 
         # Bottom bars
         n_bot = sum(n for _, n in self.bars_bot)
-        db_b  = self.bars_bot[0][0]
+        db_b  = max(db for db, _ in self.bars_bot)
         y_bot = y0 + self.cover + self.db_stirrup + db_b / 2
-        for x in self._bar_x_positions(n_bot):
+        for x in self._bar_x_positions(n_bot, db_ref=db_b):
             doc.draw_rebar_circle(x0 + x, y_bot, db_b, layer=Layer.REBAR)
 
         # Label

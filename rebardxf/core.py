@@ -6,6 +6,7 @@ Provides a clean API over ezdxf for structural drawing generation.
 from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
+import logging
 import math
 
 try:
@@ -14,6 +15,8 @@ try:
     HAS_EZDXF = True
 except ImportError:
     HAS_EZDXF = False
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -141,8 +144,13 @@ class DXFDocument:
                     dxfattribs={"layer": layer.value}
                 )
                 dim.render()
-            except Exception:
-                pass  # graceful fallback if dimstyle not found
+            except Exception as exc:
+                logger.warning("dimension_linear fallback to line (%s -> %s): %s", p1, p2, exc)
+                self._msp.add_line(
+                    start=(p1[0], p1[1] + dim_line_offset, 0),
+                    end=(p2[0], p2[1] + dim_line_offset, 0),
+                    dxfattribs={"layer": layer.value},
+                )
 
     def hatch_concrete(self, boundary_pts: list[tuple]) -> None:
         """Add concrete hatch (cross-hatch) inside boundary polygon."""
@@ -154,8 +162,8 @@ class DXFDocument:
             hatch.paths.add_polyline_path(
                 [(p[0], p[1]) for p in boundary_pts], is_closed=True
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("hatch_concrete skipped for %d points: %s", len(boundary_pts), exc)
 
     def save(self) -> str:
         """Save the DXF document and return filename."""

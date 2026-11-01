@@ -22,6 +22,7 @@ except ImportError as exc:  # pragma: no cover
     raise DependencyError("ezdxf requerido: pip install ezdxf") from exc
 
 from .core import DXFDocument
+from .column_section import ColumnDetail
 
 
 @dataclass(frozen=True)
@@ -92,21 +93,38 @@ def _draw_elevation(msp, d: ColumnRebarDetail, x0: float, y0: float) -> None:
         dxfattribs={"layer": layer_c, "color": 7},
     )
     if d.longitudinal:
-        n = len(d.longitudinal)
+        n_marks = len(d.longitudinal)
         usable = d.b_mm - 2 * d.cover_mm
-        spacing = usable / max(n - 1, 1) if n > 1 else 0.0
-        for i, bar in enumerate(d.longitudinal):
-            x_bar = x0 + d.cover_mm + (i * spacing if n > 1 else usable / 2)
-            msp.add_line(
-                (x_bar, y0 + d.cover_mm),
-                (x_bar, y0 + d.H_mm - d.cover_mm),
-                dxfattribs={"layer": layer_a, "color": 1},
-            )
+        if n_marks == 1 and d.longitudinal[0].quantity >= 4:
+            bar = d.longitudinal[0]
+            n_vis = max(2, min(bar.quantity // 2, 6))
+            spacing = usable / (n_vis - 1)
+            for i in range(n_vis):
+                x_bar = x0 + d.cover_mm + i * spacing
+                msp.add_line(
+                    (x_bar, y0 + d.cover_mm),
+                    (x_bar, y0 + d.H_mm - d.cover_mm),
+                    dxfattribs={"layer": layer_a, "color": 1},
+                )
             _place_text(
-                msp, f"{bar.mark}-{int(bar.diameter_mm)}",
-                x_bar - 5, y0 + d.H_mm + 100,
+                msp, f"{bar.mark}-{int(bar.diameter_mm)} ({bar.quantity}Ø{int(bar.diameter_mm)})",
+                x0 + d.cover_mm, y0 + d.H_mm + 100,
                 height=80, layer="TEXTO",
             )
+        else:
+            spacing = usable / max(n_marks - 1, 1) if n_marks > 1 else 0.0
+            for i, bar in enumerate(d.longitudinal):
+                x_bar = x0 + d.cover_mm + (i * spacing if n_marks > 1 else usable / 2)
+                msp.add_line(
+                    (x_bar, y0 + d.cover_mm),
+                    (x_bar, y0 + d.H_mm - d.cover_mm),
+                    dxfattribs={"layer": layer_a, "color": 1},
+                )
+                _place_text(
+                    msp, f"{bar.mark}-{int(bar.diameter_mm)}",
+                    x_bar - 5, y0 + d.H_mm + 100,
+                    height=80, layer="TEXTO",
+                )
     _place_text(msp, f"H = {int(d.H_mm)} mm", x0, y0 - 200,
                 height=120, layer="COTAS")
     _place_text(msp, f"ALZADO {d.name}", x0, y0 + d.H_mm + 400,
@@ -114,9 +132,23 @@ def _draw_elevation(msp, d: ColumnRebarDetail, x0: float, y0: float) -> None:
 
 
 def _draw_sections(msp, d: ColumnRebarDetail, x0: float, y0: float) -> None:
-    """Tres secciones transversales (base, media, cabeza)."""
+    """Tres secciones transversales (base, media, cabeza) con todas las barras perimetrales."""
     sec_size = max(d.b_mm, d.h_mm)
     gap = 200
+    bars_spec = [(b.diameter_mm, b.quantity) for b in d.longitudinal if b.quantity > 0]
+    db_stir = d.stirrups[0].diameter_mm if d.stirrups else 0.0
+    col_layout = (
+        ColumnDetail(
+            b=d.b_mm,
+            h=d.h_mm,
+            cover=d.cover_mm,
+            bars=bars_spec,
+            db_stirrup=db_stir,
+        )
+        if bars_spec
+        else None
+    )
+
     for i, label in enumerate(["BASE", "MEDIA", "CABEZA"]):
         cx = x0
         cy = y0 + i * (sec_size + gap + 400)
@@ -125,19 +157,14 @@ def _draw_sections(msp, d: ColumnRebarDetail, x0: float, y0: float) -> None:
              (cx, cy + d.h_mm), (cx, cy)],
             close=True, dxfattribs={"layer": "CONCRETO"},
         )
-        if d.longitudinal:
-            bar_d = d.longitudinal[0].diameter_mm
-            half_b = d.b_mm / 2 - d.cover_mm - bar_d / 2
-            half_h = d.h_mm / 2 - d.cover_mm - bar_d / 2
-            cx0, cy0 = cx + d.b_mm / 2, cy + d.h_mm / 2
-            for sx in (-1, 1):
-                for sy in (-1, 1):
-                    msp.add_circle(
-                        (cx0 + sx * half_b, cy0 + sy * half_h),
-                        radius=bar_d / 2,
-                        dxfattribs={"layer": "ARMADURA", "color": 1},
-                    )
-            # Estribo (recuadro al recubrimiento) si hay estribos definidos
+        if col_layout is not None:
+            bar_d = col_layout.bar_diameter()
+            for bx, by in col_layout._bar_positions:
+                msp.add_circle(
+                    (cx + bx, cy + by),
+                    radius=bar_d / 2,
+                    dxfattribs={"layer": "ARMADURA", "color": 1},
+                )
             if d.stirrups:
                 msp.add_lwpolyline(
                     [(cx + d.cover_mm, cy + d.cover_mm),
