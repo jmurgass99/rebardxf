@@ -32,7 +32,7 @@ O desenho de armaduras é onde o cálculo se transforma em obra, e onde mais se 
 pip install git+https://github.com/jmurgass99/rebardxf.git
 ```
 
-Extras: `api` (FastAPI, pydantic, httpx), `autocad` (envio em direto com pyautocad, só Windows), `test`. Para desenvolvimento: `git clone`, `pip install -e ".[test,api]"`, `pytest -q` (28 ficheiros de testes; `tests/test_examples.py` executa os 25 exemplos como subprocessos). No Windows, se a consola não for UTF-8, execute os exemplos com `python -X utf8 examples/<nome>.py`. Os exemplos escrevem os seus DXF em `examples/out/` (não versionado) e a saída de consola em `examples/output/`.
+Extras: `api` (FastAPI, pydantic, httpx), `autocad` (envio em direto com pyautocad, só Windows), `test`. Para desenvolvimento: `git clone`, `pip install -e ".[test,api]"`, `pytest -q` (30 ficheiros de testes; `tests/test_examples.py` executa os 25 exemplos como subprocessos). No Windows, se a consola não for UTF-8, execute os exemplos com `python -X utf8 examples/<nome>.py`. Os exemplos escrevem os seus DXF em `examples/out/` (não versionado) e a saída de consola em `examples/output/`.
 
 ## Capacidades
 
@@ -137,9 +137,9 @@ Pilar C-7 500 × 500 mm, H = 3600 mm, recubrimiento 40 mm
      E2  10   1.84   6    51   0.617       6.8
   TOTAL = 126.7 kg; comprobación L1: 7850·π·0,02²/4·4,20·8 = 82.9 kg; Ø10 pesa 0.617 kg/m (tabla 0,617)
 
-DXF C-7_despiece.dxf: {'LWPOLYLINE': 33, 'LINE': 2, 'TEXT': 39, 'CIRCLE': 12}; por capa {'CONCRETO': 4, 'ARMADURA': 14, 'TEXTO': 63, 'COTAS': 1, 'ESTRIBO': 3, 'CAJETIN': 1}
+DXF C-7_despiece.dxf: {'LWPOLYLINE': 33, 'LINE': 2, 'TEXT': 39, 'CIRCLE': 36}; por capa {'CONCRETO': 4, 'ARMADURA': 38, 'TEXTO': 63, 'COTAS': 1, 'ESTRIBO': 3, 'CAJETIN': 1}
   Textos de cabecera y planilla: ['ALZADO C-7', 'PLANILLA DE ARMADURA', 'TOTAL = 126.7 kg', 'Proyecto: Edificio de oficinas — Bloque B', 'Elemento: C-7']
-  Secciones: ['BASE', 'MEDIA', 'CABEZA']; círculos dibujados = 12 = 3 secciones × 4 esquinas (las 12 barras reales no se reparten: límite del generador)
+  Secciones: ['BASE', 'MEDIA', 'CABEZA']; círculos dibujados = 36 = 3 secciones × 12 por sección; barras reales = 12 → todas dibujadas en cada corte
 
 Servicio draw_column_rebar C-8: total 173.65 kg, 1 marcas longitudinales, 1 de estribo → C-8_despiece.dxf
 
@@ -656,12 +656,12 @@ La planta de 24 m pide 1:50 en A1, 1:75 en A3 (la serie incluye el 75; muchas of
 Documento de ezdxf creado por ColumnDetail: versión AC1032 (R2018), 21 entidades en el modelo
 
   pedida  fichero   leído    ok errores arreglos entidades   bytes
-   R2000 P-5_R2000.dxf   R2000  True       0        0        21   23559
-   R2004 P-5_R2004.dxf   R2004  True       0        0        21   24003
-   R2007 P-5_R2007.dxf   R2007  True       0        0        21   25279
-   R2010 P-5_R2010.dxf   R2010  True       0        0        21   25317
-   R2013 P-5_R2013.dxf   R2013  True       0        0        21   25351
-   R2018 P-5_R2018.dxf   R2018  True       0        0        21   25349
+   R2000 P-5_R2000.dxf   R2000  True       0        0        21   23557
+   R2004 P-5_R2004.dxf   R2004  True       0        0        21   24001
+   R2007 P-5_R2007.dxf   R2007  True       0        0        21   25277
+   R2010 P-5_R2010.dxf   R2010  True       0        0        21   25315
+   R2013 P-5_R2013.dxf   R2013  True       0        0        21   25349
+   R2018 P-5_R2018.dxf   R2018  True       0        0        21   25347
   Las seis versiones llevan las mismas 21 entidades; el fichero crece con la versión por las tablas y objetos que añade cada formato.
 
   Versión no soportada → ConfigurationError: dxfversion 'R2025' no soportada. Use una de ('R2000', 'R2004', 'R2007', 'R2010', 'R2013', …
@@ -727,8 +727,8 @@ C:\Users\jesus\AppData\Local\Temp\jmv\rebardxf\Lib\site-packages\fastapi\testcli
   from starlette.testclient import TestClient as TestClient  # noqa
 API «RebarDXF REST API» v1.2.0; GET /api/drawings/health → {'status': 'ok', 'service': 'rebardxf'}
 
-POST /column (12Ø20) → 200; 25849 bytes en base64, entidades {'lines': 8, 'circles': 12, 'texts': 3, 'rects': 2}, resumen ρ = 1.508 %, A_s = 3769.9 mm²; DXF decodificado: {'LINE': 8, 'HATCH': 1, 'CIRCLE': 12, 'TEXT': 3, 'DIMENSION': 1}
-POST /beam?format=file → 200, application/dxf, 22320 bytes, empieza por b'  0\r\nSECTION'
+POST /column (12Ø20) → 200; 25851 bytes en base64, entidades {'lines': 8, 'circles': 12, 'texts': 3, 'rects': 2}, resumen ρ = 1.508 %, A_s = 3769.9 mm²; DXF decodificado: {'LINE': 8, 'HATCH': 1, 'CIRCLE': 12, 'TEXT': 3, 'DIMENSION': 1}
+POST /beam?format=file → 200, application/dxf, 22322 bytes, empieza por b'  0\r\nSECTION'
 POST /footing (2 zapatas) → 200; cuadro: Z-1 CALCULADO_CUMPLE; Z-2 NO_CALCULADO; 58 entidades
 POST /wall → 200; ρ_be = 1.496 %, ρ_v = 0.503 %, check_v = True
   column con recubrimiento ≥ b/2 → 422: cover_mm fuera de rango
@@ -747,36 +747,7 @@ La API escribe cada DXF en un directorio temporal y lo devuelve; no guarda estad
 <details><summary>Saída real de <code>python examples/audit_status_resolve_and_aggregate_closed_by_default_no_silent_pass.py</code></summary>
 
 ```text
-Condiciones de evidencia (6): ('demand_present', 'capacity_present', 'analysis_executed', 'geometry_present', 'material_present', 'reinforcement_present')
-
-  caso                                                       estado
-  utilización 0,85 con las seis evidencias         CALCULADO_CUMPLE
-  utilización 1,20 con las seis evidencias          CALCULADO_FALLA
-  utilización 0,85 sin declarar nada                   NO_CALCULADO
-  utilización 0,85, reinforcement_present=False        NO_CALCULADO
-  utilización 0,85, falta f_c en missing_inputs        NO_CALCULADO
-  utilización 0,85, método no soportado           REQUIERE_REVISION
-  sin número (None) con evidencias                REQUIERE_REVISION
-  ratio +inf (capacidad cero)                     REQUIERE_REVISION
-  ratio NaN                                       REQUIERE_REVISION
-  ratio −0,2 (signo invertido)                    REQUIERE_REVISION
-  ratio 1 + 6,66e-16 (tres ULP)                    CALCULADO_CUMPLE
-  ratio 1,001 (0,1 % de exceso)                     CALCULADO_FALLA
-  demanda cero con evidencias                      CALCULADO_CUMPLE
-
-Agregación de estados:
-  [] (ninguna comprobación)                → NO_CALCULADO
-  [CUMPLE, CUMPLE, CUMPLE]                 → CALCULADO_CUMPLE
-  [CUMPLE, NO_APLICA]                      → CALCULADO_CUMPLE
-  [NO_APLICA, NO_APLICA]                   → NO_APLICA
-  [CUMPLE, REQUIERE_REVISION]              → REQUIERE_REVISION
-  [CUMPLE, NO_CALCULADO]                   → NO_CALCULADO
-  [CUMPLE, NO_CALCULADO, FALLA]            → CALCULADO_FALLA
-  [REQUIERE_REVISION, NO_CALCULADO]        → NO_CALCULADO
-  ['CALCULADO_CUMPLE', 'texto raro']       → REQUIERE_REVISION
-
-  all([]) en Python es True: por eso la lista vacía se trata aparte y da NO_CALCULADO; un plano con cero comprobaciones no está aprobado, está sin comprobar.
-Este contrato es el que usan `FootingData`/`FoundationPlan` (estado inicial NO_CALCULADO, nunca un armado por defecto) y el que debería envolver cualquier verificación que termine en un plano: la ausencia se propaga como ausencia.
+../scripts_repos/run_examples.sh: line 14: $PY: command not found
 ```
 
 </details>
@@ -792,7 +763,7 @@ Este contrato es el que usan `FootingData`/`FoundationPlan` (estado inicial NO_C
 ## Limitações
 
 - Não dimensiona: A_s, amarrações, emendas e comprimentos de varão são dados do projetista; o pacote distribui, verifica espaçamentos e taxas mínimas e desenha.
-- `BeamDetail` desenha cada camada com o primeiro diâmetro do grupo e coloca os varões superiores com o afastamento dos inferiores; `ColumnDetail` desenha o maior Ø e repete uma posição com um total ímpar; `column_rebar_detail` mostra quatro varões de canto nas secções e uma linha por marca no alçado; `column_schedule_grid` distribui os varões intermédios só nas faces superior e inferior. Para diâmetros misturados use `integration.fastsap_bridge.RCSectionDesign`.
+- `BeamDetail` desenha cada camada com o maior diâmetro do grupo (uma só posição por varão, sem distinguir diâmetros); `ColumnDetail` desenha o maior Ø e repete uma posição com um total ímpar; `column_rebar_detail` desenha todos os varões do perímetro nas secções e uma linha por marca no alçado; `column_schedule_grid` distribui os varões intermédios só nas faces superior e inferior. Para diâmetros misturados use `integration.fastsap_bridge.RCSectionDesign`.
 - `FootingData.s_commercial_step_mm` é aceite mas a etiqueta arredonda ao milímetro; o recobrimento por defeito é 75 mm (ACI 318-19 Tabela 20.5.1.3.1, contra o terreno) e s_máx usa 3h sem o limite de 2h das lajes; `rebar_schedule_block.RebarItem` pesa com 0,00617·Ø² (0,07 % acima do exato); as formas L, U e S de `rebar_shapes` não aceitam `bar=` e usam o raio antigo (3Ø, 4Ø, 5Ø).
 - As camadas convivem em duas famílias (CONCRETO/ARMADURA e S-COLU-CONC/S-COLU-RBAR) e a ligação de secção usa uma terceira (CONCRETE/REBAR/TIE); `templates_construction` escreve «SOFTWARE: JMSTRUCTURAL» e `SheetTemplate` «v1.0» na legenda; os códigos ISO 13567 dão-se como padrão, não como catálogo.
 - `DXFDocument.dimension_linear` e `hatch_concrete` engolem exceções do ezdxf (se o estilo de cota não existir, a cota desaparece sem aviso): verifique a contagem de DIMENSION/HATCH com `verify` ou relendo o ficheiro.

@@ -2,8 +2,8 @@ C:\Users\jesus\AppData\Local\Temp\jmv\rebardxf\Lib\site-packages\fastapi\testcli
   from starlette.testclient import TestClient as TestClient  # noqa
 API «RebarDXF REST API» v1.2.0; GET /api/drawings/health → {'status': 'ok', 'service': 'rebardxf'}
 
-POST /column (12Ø20) → 200; 25849 bytes en base64, entidades {'lines': 8, 'circles': 12, 'texts': 3, 'rects': 2}, resumen ρ = 1.508 %, A_s = 3769.9 mm²; DXF decodificado: {'LINE': 8, 'HATCH': 1, 'CIRCLE': 12, 'TEXT': 3, 'DIMENSION': 1}
-POST /beam?format=file → 200, application/dxf, 22320 bytes, empieza por b'  0\r\nSECTION'
+POST /column (12Ø20) → 200; 25851 bytes en base64, entidades {'lines': 8, 'circles': 12, 'texts': 3, 'rects': 2}, resumen ρ = 1.508 %, A_s = 3769.9 mm²; DXF decodificado: {'LINE': 8, 'HATCH': 1, 'CIRCLE': 12, 'TEXT': 3, 'DIMENSION': 1}
+POST /beam?format=file → 200, application/dxf, 22322 bytes, empieza por b'  0\r\nSECTION'
 POST /footing (2 zapatas) → 200; cuadro: Z-1 CALCULADO_CUMPLE; Z-2 NO_CALCULADO; 58 entidades
 POST /wall → 200; ρ_be = 1.496 %, ρ_v = 0.503 %, check_v = True
   column con recubrimiento ≥ b/2 → 422: cover_mm fuera de rango

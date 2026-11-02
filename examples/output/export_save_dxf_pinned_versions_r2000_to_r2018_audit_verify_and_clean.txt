@@ -1,12 +1,12 @@
 Documento de ezdxf creado por ColumnDetail: versión AC1032 (R2018), 21 entidades en el modelo
 
   pedida  fichero   leído    ok errores arreglos entidades   bytes
-   R2000 P-5_R2000.dxf   R2000  True       0        0        21   23559
-   R2004 P-5_R2004.dxf   R2004  True       0        0        21   24003
-   R2007 P-5_R2007.dxf   R2007  True       0        0        21   25279
-   R2010 P-5_R2010.dxf   R2010  True       0        0        21   25317
-   R2013 P-5_R2013.dxf   R2013  True       0        0        21   25351
-   R2018 P-5_R2018.dxf   R2018  True       0        0        21   25349
+   R2000 P-5_R2000.dxf   R2000  True       0        0        21   23557
+   R2004 P-5_R2004.dxf   R2004  True       0        0        21   24001
+   R2007 P-5_R2007.dxf   R2007  True       0        0        21   25277
+   R2010 P-5_R2010.dxf   R2010  True       0        0        21   25315
+   R2013 P-5_R2013.dxf   R2013  True       0        0        21   25349
+   R2018 P-5_R2018.dxf   R2018  True       0        0        21   25347
   Las seis versiones llevan las mismas 21 entidades; el fichero crece con la versión por las tablas y objetos que añade cada formato.
 
   Versión no soportada → ConfigurationError: dxfversion 'R2025' no soportada. Use una de ('R2000', 'R2004', 'R2007', 'R2010', 'R2013', …

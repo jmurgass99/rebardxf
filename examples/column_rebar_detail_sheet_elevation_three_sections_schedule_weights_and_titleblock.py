@@ -3,8 +3,8 @@
 `ColumnRebarDetail` recibe las marcas de barra (`ColumnRebarBar`: marca, Ø, longitud, cantidad,
 forma) y `render_column_rebar_detail` compone la hoja. El peso de cada marca es ρ·A·L·n con
 7850 kg/m³. Se comprueba el peso a mano, se cuentan las entidades del DXF y se pasa el mismo pilar
-por el servicio `draw_column_rebar`. Límites del dibujo: las secciones muestran cuatro barras de
-esquina y el alzado una línea por marca (no por barra).
+por el servicio `draw_column_rebar`. Las secciones dibujan todas las barras del perímetro (se
+cuenta en el DXF); el alzado dibuja una línea por marca, no por barra.
 
 Ejecutar:  python examples/column_rebar_detail_sheet_elevation_three_sections_schedule_weights_and_titleblock.py
 """
@@ -43,7 +43,10 @@ def main() -> None:
     print(f"\nDXF {p.name}: {dict(cnt)}; por capa {dict(capas)}")
     textos = [t.dxf.text for t in dxf.modelspace().query("TEXT")]
     print(f"  Textos de cabecera y planilla: {[t for t in textos if t.startswith(('ALZADO', 'PLANILLA', 'TOTAL', 'Proyecto', 'Elemento'))]}")
-    print(f"  Secciones: {[t for t in textos if t in ('BASE', 'MEDIA', 'CABEZA')]}; círculos dibujados = {cnt['CIRCLE']} = 3 secciones × 4 esquinas (las {sum(b.quantity for b in longit)} barras reales no se reparten: límite del generador)")
+    secciones = [t for t in textos if t in ('BASE', 'MEDIA', 'CABEZA')]
+    n_barras = sum(b.quantity for b in longit)
+    print(f"  Secciones: {secciones}; círculos dibujados = {cnt['CIRCLE']} = {len(secciones)} secciones × {cnt['CIRCLE'] // max(len(secciones), 1)} "
+          f"por sección; barras reales = {n_barras} → {'todas dibujadas en cada corte' if cnt['CIRCLE'] == len(secciones) * n_barras else 'NO coinciden'}")
     meta = draw_column_rebar(ColumnRebarInput(name="C-8", b_mm=400.0, h_mm=600.0, H_mm=3200.0, cover_mm=40.0,
                                               longitudinal=[_BarSpec("L1", 25.0, 3.80, 10)], stirrups=[_BarSpec("E1", 10.0, 1.84, 24)], project="Bloque B", drawn_by="JM"), OUT / "C-8_despiece.dxf")
     print(f"\nServicio draw_column_rebar C-8: total {meta['total_kg']} kg, {meta['n_longitudinal']} marcas longitudinales, {meta['n_stirrups']} de estribo → {Path(meta['path']).name}")
